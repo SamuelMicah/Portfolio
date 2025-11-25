@@ -1,62 +1,113 @@
 {
-    contact: {
-        email: 'samuelmicah02@gmail.com',
-        cvUrl: 'https://docs.google.com/document/d/1bdB3gxiEyuLPeDKDBcVGROxLo0mspxOm9CgLwIGQEJI/edit?tab=t.mxjxq8bvb1jr#heading=h.8zh959834yjl'
+  "contact": {
+    "email": "samuelmicah02@gmail.com",
+    "cvUrl": "https://docs.google.com/document/d/1bdB3gxiEyuLPeDKDBcVGROxLo0mspxOm9CgLwIGQEJI/edit?tab=t.mxjxq8bvb1jr#heading=h.8zh959834yjl"
+  },
+  "socials": [
+    {
+      "icon": "fa-github",
+      "url": "https://github.com/SamuelMicah"
     },
-    socials: [
-        { icon: 'fa-github', url: 'https://github.com/SamuelMicah' },
-        { icon: 'fa-linkedin', url: 'https://www.linkedin.com/in/samuel-micah/' },
-        { icon: 'fa-instagram', url: 'https://www.instagram.com/itz_baby_junior/' },
-        { icon: 'fa-tiktok', url: 'https://www.tiktok.com/@itz_baby_junior' },
-    ],
-    certs: [
-        { 
-            img: './public/Images/image.png', 
-            name: 'AWS Cloud Practitioner', 
-            url: 'https://www.credly.com/badges/53ec01b9-468c-4126-ac18-969e3d2acf1f/linked_in_profile' 
-        },
-        { img: './public/Images/image-2.png', name: 'AWS Solutions Architect', url: '#' },
-        { img: './public/Images/image-3.png', name: 'AWS Developer', url: '#' },
-        { img: './public/Images/image-4.png', name: 'Google ML Engineer', url: '#' }
-    ],
-    skills: [
+    {
+      "icon": "fa-linkedin",
+      "url": "https://www.linkedin.com/in/samuel-micah/"
+    },
+    {
+      "icon": "fa-instagram",
+      "url": "https://www.instagram.com/itz_baby_junior/"
+    },
+    {
+      "icon": "fa-tiktok",
+      "url": "https://www.tiktok.com/@itz_baby_junior"
+    }
+  ],
+  "certs": [
+    {
+      "img": "./public/Images/image.png",
+      "name": "AWS Cloud Practitioner",
+      "url": "https://www.credly.com/badges/53ec01b9-468c-4126-ac18-969e3d2acf1f/linked_in_profile"
+    },
+    {
+      "img": "./public/Images/image-2.png",
+      "name": "AWS Solutions Architect",
+      "url": "#"
+    },
+    {
+      "img": "./public/Images/image-3.png",
+      "name": "AWS Developer",
+      "url": "#"
+    },
+    {
+      "img": "./public/Images/image-4.png",
+      "name": "Google ML Engineer",
+      "url": "#"
+    }
+  ],
+  "skills": [
+    {
+      "title": "Software & Programming",
+      "items": [
         {
-            title: "Software & Programming",
-            items: [
-                { label: "Languages", val: "C, C++, Python, MATLAB, JavaScript, Swift UI" },
-                { label: "Game Dev", val: "Unity Engine, Three.js, WebRTC, Firebase" },
-                { label: "AI/Data", val: "OpenCV, PyTorch, AWS SageMaker" }
-            ]
+          "label": "Languages",
+          "val": "C, C++, Python, MATLAB, JavaScript, Swift UI"
         },
         {
-            title: "Engineering & Hardware",
-            items: [
-                { label: "Embedded", val: "Arduino, Raspberry Pi, ESP32" },
-                { label: "PCB Design", val: "KiCad, Eagle, Circuit simulation" },
-                { label: "AI/Data", val: "OpenCV, PyTorch, AWS SageMaker" }
-            ]
+          "label": "Game Dev",
+          "val": "Unity Engine, Three.js, WebRTC, Firebase"
         },
         {
-            title: "Cloud & DevOps",
-            items: [
-                { label: "AWS", val: "EC2, S3, Lambda, DynamoDB" },
-                { label: "CI/CD", val: "GitHub Actions, Docker, Jenkins" },
-                { label: "AI/Data", val: "OpenCV, PyTorch, AWS SageMaker" }
-            ]
+          "label": "AI/Data",
+          "val": "OpenCV, PyTorch, AWS SageMaker"
         }
-    ],
-    projects: [
+      ]
+    },
+    {
+      "title": "Engineering & Hardware",
+      "items": [
         {
-            title: "How to train your Dragon",
-            img: "./public/Images/project1.png",
-            desc: "A machine learning model exploring reinforcement learning agents in simulated environments.",
-            link: "https://github.com/SamuelMicah"
+          "label": "Embedded",
+          "val": "Arduino, Raspberry Pi, ESP32"
         },
         {
-            title: "Autonomous Rover",
-            img: "./public/Images/project1.png",
-            desc: "Embedded systems project utilizing computer vision for obstacle avoidance.",
-            link: "https://github.com/SamuelMicah"
+          "label": "PCB Design",
+          "val": "KiCad, Eagle, Circuit simulation"
         },
-    ]
+        {
+          "label": "AI/Data",
+          "val": "OpenCV, PyTorch, AWS SageMaker"
+        }
+      ]
+    },
+    {
+      "title": "Cloud & DevOps",
+      "items": [
+        {
+          "label": "AWS",
+          "val": "EC2, S3, Lambda, DynamoDB"
+        },
+        {
+          "label": "CI/CD",
+          "val": "GitHub Actions, Docker, Jenkins"
+        },
+        {
+          "label": "AI/Data",
+          "val": "OpenCV, PyTorch, AWS SageMaker"
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "How to train your Dragon",
+      "img": "./public/Images/project1.png",
+      "desc": "A machine learning model exploring reinforcement learning agents in simulated environments.",
+      "link": "https://github.com/SamuelMicah"
+    },
+    {
+      "title": "Autonomous Rover",
+      "img": "./public/Images/project1.png",
+      "desc": "Embedded systems project utilizing computer vision for obstacle avoidance.",
+      "link": "https://github.com/SamuelMicah"
+    }
+  ]
 }
