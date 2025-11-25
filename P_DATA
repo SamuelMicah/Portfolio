@@ -23,22 +23,22 @@
   ],
   "certs": [
     {
-      "img": "./Images/image.png",
+      "img": "./P/Images/image.png",
       "name": "AWS Cloud Practitioner",
       "url": "https://www.credly.com/badges/53ec01b9-468c-4126-ac18-969e3d2acf1f/linked_in_profile"
     },
     {
-      "img": "./Images/image-2.png",
+      "img": "./P/Images/image-2.png",
       "name": "AWS Solutions Architect",
       "url": "#"
     },
     {
-      "img": "./Images/image-3.png",
+      "img": "./P/Images/image-3.png",
       "name": "AWS Developer",
       "url": "#"
     },
     {
-      "img": "./Images/image-4.png",
+      "img": "./P/Images/image-4.png",
       "name": "Google ML Engineer",
       "url": "#"
     }
@@ -99,13 +99,13 @@
   "projects": [
     {
       "title": "How to train your Dragon",
-      "img": "./Images/project1.png",
+      "img": "./P/Images/project1.png",
       "desc": "A machine learning model exploring reinforcement learning agents in simulated environments.",
       "link": "https://github.com/SamuelMicah"
     },
     {
       "title": "Autonomous Rover",
-      "img": "./Images/project1.png",
+      "img": "./P/Images/project1.png",
       "desc": "Embedded systems project utilizing computer vision for obstacle avoidance.",
       "link": "https://github.com/SamuelMicah"
     }
