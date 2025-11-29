@@ -38,7 +38,9 @@
         "background_iframe_src": "",
         "project_iframe_src": "",
         "title": "❤️ About Me",
-        "project_description": ""
+        "project_description": "esign, construct, and test a prototype heart rate and pulse
+            oximeter device to measure blood oxygen saturation (SpO2) and heart
+            rate using photoplethysmography (PPG) signals."
     },
     "Default": {
         "title_navigation_color": "black",
