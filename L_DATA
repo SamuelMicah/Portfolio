@@ -23,8 +23,8 @@
         "projectcarousel_backdropfilter": "blur(0px)",
         "projectcarousel_border": [
             "0px",
-            "10px",
-            "10px",
+            "5px",
+            "5px",
             "0px"
         ],
         "projectcarousel_bordercolor": [
@@ -64,10 +64,10 @@
         "projectcarousel_color": "transparent",
         "projectcarousel_backdropfilter": "blur(0px)",
         "projectcarousel_border": [
-            "2px",
-            "2px",
-            "2px",
-            "2px"
+            "5px",
+            "5px",
+            "5px",
+            "5px"
         ],
         "projectcarousel_bordercolor": [
             "blue",
