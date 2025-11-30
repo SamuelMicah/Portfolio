@@ -38,7 +38,8 @@
         "background_iframe_src": "",
         "project_iframe_src": "",
         "title": "❤️ About Me",
-        "project_description": "(PPG) signals."
+        "project_description": "(PPG) signals.",
+        "pagination": "true"
     },
     "Default": {
         "title_navigation_color": "black",
@@ -79,6 +80,7 @@
         "background_iframe_src": "",
         "project_iframe_src": "",
         "title": "",
-        "project_description": ""
+        "project_description": "",
+        "pagination": "false"
     }
 }
