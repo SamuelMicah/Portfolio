@@ -64,18 +64,18 @@
         "projectcarousel_color": "transparent",
         "projectcarousel_backdropfilter": "blur(0px)",
         "projectcarousel_border": [
-            "0px",
-            "0px",
-            "0px",
-            "0px"
+            "2px",
+            "2px",
+            "2px",
+            "2px"
         ],
         "projectcarousel_bordercolor": [
-            "transparent",
-            "transparent",
-            "transparent",
-            "transparent"
+            "blue",
+            "blue",
+            "blue",
+            "blue"
         ],
-        "projectcarousel_radius": "0px",
+        "projectcarousel_radius": "10px",
         "projectcarousel_boxshadow": "0 0px 0px transparent",
         "background_iframe_src": "",
         "project_iframe_src": "",
