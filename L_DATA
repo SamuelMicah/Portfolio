@@ -1,7 +1,7 @@
 {
     "Default": {
         "title": "",        
-        "title_navigation_color": "black",
+        "title_navigation_color": "transparent",
 
 
         "background_color": "transparent",
@@ -52,6 +52,9 @@
         "project_description": "",
 
 
-        "pagination": "true"
+        "pagination": "true",
+        "pagination_color": "transparent",
+        "pagination_active_color": "transparent",
+        "pagination_hover_color": "transparent"
     }
 }
