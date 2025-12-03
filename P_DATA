@@ -1,8 +1,17 @@
 {
+  "welcomeMsg": "Hey! I'm",
+
+  "name": "Name",
+
+  "welcomeEmoji": "👋",
+
+  "about": "about me text goes here.",
+  
   "contact": {
     "email": "samuelmicah02@gmail.com",
     "cvUrl": "../Samuel_Micah_CV.pdf"
   },
+
   "socials": [
     {
       "icon": "fa-github",
@@ -53,6 +62,7 @@
       "url": "https://wa.me/1234567890"
     }
   ],
+
   "certs": [
     {
       "img": "./P/Images/image.png",
@@ -71,10 +81,11 @@
     },
     {
       "img": "./P/Images/image-4.png",
-      "name": "Google ML Engineer",
+      "name": "AWS DevOps Engineer",
       "url": "#"
     }
   ],
+
   "skills": [
     {
       "title": "Software & Programming",
@@ -128,6 +139,7 @@
       ]
     }
   ],
+
   "projects": [
     {
       "title": "How to train your Dragon",
