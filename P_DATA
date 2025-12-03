@@ -1,7 +1,7 @@
 {
   "contact": {
     "email": "samuelmicah02@gmail.com",
-    "cvUrl": "https://docs.google.com/document/d/1bdB3gxiEyuLPeDKDBcVGROxLo0mspxOm9CgLwIGQEJI/edit?tab=t.mxjxq8bvb1jr#heading=h.8zh959834yjl"
+    "cvUrl": "../Samuel_Micah_CV.pdf"
   },
   "socials": [
     {
@@ -19,6 +19,38 @@
     {
       "icon": "fa-tiktok",
       "url": "https://www.tiktok.com/@itz_baby_junior"
+    },
+    {
+      "icon": "fa-twitter",
+      "url": "https://twitter.com/itz_baby_junior"
+    },
+    {
+      "icon": "fa-facebook",
+      "url": "https://www.facebook.com/itzbabyjunior"
+    },
+    {
+      "icon": "fa-medium",
+      "url": "https://medium.com/@samuelmicah02"
+    },
+    {
+      "icon": "fa-youtube",
+      "url": "https://www.youtube.com/channel/UCXXXXXX"
+    },
+    {
+      "icon": "fa-pinterest",
+      "url": "https://www.pinterest.com/itz_baby_junior/"
+    },
+    {
+      "icon": "fa-twitch",
+      "url": "https://www.twitch.tv/itz_baby_junior"
+    },
+    {
+      "icon": "fa-discord",
+      "url": "https://discord.gg/invitecode"
+    },
+    {
+      "icon": "fa-whatsapp",
+      "url": "https://wa.me/1234567890"
     }
   ],
   "certs": [
@@ -49,7 +81,7 @@
       "items": [
         {
           "label": "Languages",
-          "val": "C, C++, Python, MATLAB, JavaScript, Swift UI"
+          "val": "C, C++, Python, MATLAB, JavaScript"
         },
         {
           "label": "Game Dev",
