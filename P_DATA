@@ -1,13 +1,13 @@
 {
   "welcomeMsg": "Hey! I'm",
 
-  "name": "Name",
+  "name": "Samuel Micah",
 
   "welcomeEmoji": "👋",
 
   "about": "about me text goes here.",
 
-  "projectTagline": "Some of my Projects",
+  "projectTagline": "Experienced Engineer passionate about leveraging sustainable technology to create innovative solutions and enhance user experiences. A challenging project should be considered done.",
   
   "contact": {
     "email": "samuelmicah02@gmail.com",
@@ -32,36 +32,12 @@
       "url": "https://www.tiktok.com/@itz_baby_junior"
     },
     {
-      "icon": "fa-twitter",
-      "url": "https://twitter.com/itz_baby_junior"
-    },
-    {
-      "icon": "fa-facebook",
-      "url": "https://www.facebook.com/itzbabyjunior"
-    },
-    {
-      "icon": "fa-medium",
-      "url": "https://medium.com/@samuelmicah02"
-    },
-    {
       "icon": "fa-youtube",
       "url": "https://www.youtube.com/channel/UCXXXXXX"
     },
     {
-      "icon": "fa-pinterest",
-      "url": "https://www.pinterest.com/itz_baby_junior/"
-    },
-    {
-      "icon": "fa-twitch",
-      "url": "https://www.twitch.tv/itz_baby_junior"
-    },
-    {
       "icon": "fa-discord",
       "url": "https://discord.gg/invitecode"
-    },
-    {
-      "icon": "fa-whatsapp",
-      "url": "https://wa.me/1234567890"
     }
   ],
 
@@ -147,12 +123,6 @@
       "title": "How to train your Dragon",
       "img": "./P/Images/project1.png",
       "desc": "A machine learning model exploring reinforcement learning agents in simulated environments.",
-      "link": "https://github.com/SamuelMicah"
-    },
-    {
-      "title": "Autonomous Rover",
-      "img": "./P/Images/project1.png",
-      "desc": "Embedded systems project utilizing computer vision for obstacle avoidance.",
       "link": "https://github.com/SamuelMicah"
     }
   ]
