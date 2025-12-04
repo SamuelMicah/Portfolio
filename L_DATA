@@ -1,7 +1,7 @@
 {
     "Default": {
         "title": "Funmi Ajayi",        
-        "title_navigation_color": "blue",
+        "title_navigation_color": "black",
 
 
         "background_color": "transparent",
@@ -25,8 +25,8 @@
         "backgroundblur_radius": "0px",
 
 
-        "left_navigation_color": "transparent",
-        "right_navigation_color": "transparent",
+        "left_navigation_color": "black",
+        "right_navigation_color": "black",
 
 
         "projectcarousel_filter": "drop-shadow(0px 0px 0px transparent)",
@@ -39,21 +39,83 @@
             "5px"
         ],
         "projectcarousel_bordercolor": [
-            "blue",
-            "bue",
-            "blue",
-            "blue"
+            "red",
+            "red",
+            "red",
+            "red"
         ],
         "projectcarousel_radius": "0px",
-        "inner_project_radius": "0px",
+        "inner_project_radius": "10px",
         "projectcarousel_boxshadow": "0 0px 0px transparent",
 
 
         "background_iframe_src": "https://funmiajayiportfolio.my.canva.site/funmi-ajayi-com",
-        "project_iframe_src": "https://funmiajayiportfolio.my.canva.site/funmi-ajayi-com",
+        "project_iframe_src": "https://testingground-e4bfd.web.app/",
 
 
         "project_description": "",
+
+
+        "pagination": "true",
+        "pagination_color": "transparent",
+        "pagination_active_color": "transparent",
+        "pagination_hover_color": "transparent"
+    },
+"Car test": {
+        "title": "Baby Nani",        
+        "title_navigation_color": "black",
+
+
+        "background_color": "white",
+
+
+        "backgroundblur_filter": "drop-shadow(0px 0px 0px transparent)",
+        "backgroundblur_color": "rgba(0,0,0,0.3)",
+        "backgroundblur_backdropfilter": "blur(0px)",
+        "backgroundblur_border": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+        ],
+        "backgroundblur_bordercolor": [
+            "transparent",
+            "transparent",
+            "transparent",
+            "transparent"
+        ],
+        "backgroundblur_radius": "0px",
+
+
+        "left_navigation_color": "black",
+        "right_navigation_color": "black",
+
+
+        "projectcarousel_filter": "drop-shadow(0px 0px 0px transparent)",
+        "projectcarousel_color": "transparent",
+        "projectcarousel_backdropfilter": "blur(0px)",
+        "projectcarousel_border": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+        ],
+        "projectcarousel_bordercolor": [
+            "transparent",
+            "transparent",
+            "transparent",
+            "transparent"
+        ],
+        "projectcarousel_radius": "0px",
+        "inner_project_radius": "0px",
+        "projectcarousel_boxshadow": "0px 0px 0px transparent",
+
+
+        "background_iframe_src": "https://testingground-e4bfd.web.app/",
+        "project_iframe_src": "",
+
+
+        "project_description": "Baby nina or Baby junior??",
 
 
         "pagination": "true",
