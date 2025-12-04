@@ -1,15 +1,15 @@
 {
     "Default": {
-        "title": "",        
-        "title_navigation_color": "transparent",
+        "title": "Funmi Ajayi",        
+        "title_navigation_color": "blue",
 
 
         "background_color": "transparent",
 
 
         "backgroundblur_filter": "drop-shadow(0px 0px 0px transparent)",
-        "backgroundblur_color": "transparent",
-        "backgroundblur_backdropfilter": "blur(0px)",
+        "backgroundblur_color": "rgba(0,0,0,0.3)",
+        "backgroundblur_backdropfilter": "blur(10px)",
         "backgroundblur_border": [
             "0px",
             "0px",
@@ -33,24 +33,24 @@
         "projectcarousel_color": "transparent",
         "projectcarousel_backdropfilter": "blur(0px)",
         "projectcarousel_border": [
-            "0px",
-            "0px",
-            "0px",
-            "0px"
+            "5px",
+            "5px",
+            "5px",
+            "5px"
         ],
         "projectcarousel_bordercolor": [
-            "transparent",
-            "transparent",
-            "transparent",
-            "transparent"
+            "blue",
+            "bue",
+            "blue",
+            "blue"
         ],
         "projectcarousel_radius": "0px",
         "inner_project_radius": "0px",
         "projectcarousel_boxshadow": "0 0px 0px transparent",
 
 
-        "background_iframe_src": "",
-        "project_iframe_src": "",
+        "background_iframe_src": "https://funmiajayiportfolio.my.canva.site/funmi-ajayi-com",
+        "project_iframe_src": "https://funmiajayiportfolio.my.canva.site/funmi-ajayi-com",
 
 
         "project_description": "",
