@@ -11,7 +11,7 @@
   
   "contact": {
     "email": "samuelmicah02@gmail.com",
-    "cvUrl": "../Samuel_Micah_CV.pdf"
+    "cvUrl": "/Samuel_Micah_CV.pdf"
   },
 
   "socials": [
@@ -33,32 +33,28 @@
     },
     {
       "icon": "fa-youtube",
-      "url": "https://www.youtube.com/channel/UCXXXXXX"
-    },
-    {
-      "icon": "fa-discord",
-      "url": "https://discord.gg/invitecode"
+      "url": "https://www.youtube.com/@SamuelMicah02"
     }
   ],
 
   "certs": [
     {
-      "img": "./P/Images/image.png",
+      "img": "/P/Images/image.png",
       "name": "AWS Cloud Practitioner",
       "url": "https://www.credly.com/badges/53ec01b9-468c-4126-ac18-969e3d2acf1f/linked_in_profile"
     },
     {
-      "img": "./P/Images/image-2.png",
+      "img": "/P/Images/image-2.png",
       "name": "AWS Solutions Architect",
       "url": "#"
     },
     {
-      "img": "./P/Images/image-3.png",
+      "img": "/P/Images/image-3.png",
       "name": "AWS Developer",
       "url": "#"
     },
     {
-      "img": "./P/Images/image-4.png",
+      "img": "/P/Images/image-4.png",
       "name": "AWS DevOps Engineer",
       "url": "#"
     }
@@ -123,6 +119,12 @@
       "title": "How to train your Dragon",
       "img": "./P/Images/project1.png",
       "desc": "A machine learning model exploring reinforcement learning agents in simulated environments.",
+      "link": "https://github.com/SamuelMicah"
+    },
+    {
+      "title": "Autonomous Rover",
+      "img": "./P/Images/project1.png",
+      "desc": "Embedded systems project utilizing computer vision for obstacle avoidance.",
       "link": "https://github.com/SamuelMicah"
     }
   ]
