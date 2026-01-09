@@ -1,126 +1,122 @@
 {
-    "Default": {
-        "title": "Funmi Ajayi",        
-        "title_navigation_color": "black",
+    "About Me": {
+        "background_iframe_src": "",
+        "background_color": "rgba(30, 30, 30)",
 
+        "title": "About me 👋",        
+        "title_navigation_color": "white",
 
-        "background_color": "transparent",
+        "project_description": "Experienced Engineer passionate about leveraging sustainable technology to create innovative solutions and enhance user experiences. A challenging project should be considered done.",
+        "project_description_color": "white",
 
+        "background_blur_filter": "drop-shadow(0px 0px 0px transparent)",
+        "background_blur_backdrop_filter": "blur(0px)",      
 
-        "backgroundblur_filter": "drop-shadow(0px 0px 0px transparent)",
-        "backgroundblur_color": "rgba(0,0,0,0.3)",
-        "backgroundblur_backdropfilter": "blur(10px)",
-        "backgroundblur_border": [
+        "background_blur_color": "transparent",
+        "background_blur_radius": "0px",      
+
+        "background_blur_border": [
             "0px",
             "0px",
             "0px",
             "0px"
         ],
-        "backgroundblur_bordercolor": [
+        "background_blur_border_color": [
             "transparent",
             "transparent",
             "transparent",
             "transparent"
         ],
-        "backgroundblur_radius": "0px",
 
 
-        "left_navigation_color": "black",
-        "right_navigation_color": "black",
+        "left_navigation_color": "white",
+        "right_navigation_color": "white",
 
+        "inner_project_filter": "drop-shadow(0px 0px 0px transparent)",
+        "inner_project_box_shadow": "0 0px 0px transparent",    
+        "inner_project_backdrop_filter": "blur(0px)",     
 
-        "projectcarousel_filter": "drop-shadow(0px 0px 0px transparent)",
-        "projectcarousel_color": "transparent",
-        "projectcarousel_backdropfilter": "blur(0px)",
-        "projectcarousel_border": [
-            "5px",
-            "5px",
-            "5px",
-            "5px"
+        "inner_project_color": "transparent",
+        "inner_project_radius": "10px",        
+        
+        "inner_project_border": [
+            "0px",
+            "0px",
+            "7px",
+            "7px"
         ],
-        "projectcarousel_bordercolor": [
-            "red",
-            "red",
-            "red",
-            "red"
+        "inner_project_border_color": [
+            "transparent",
+            "var(--rgb-color-long)",
+            "var(--rgb-color-long)",
+            "var(--rgb-color-long)"
         ],
-        "projectcarousel_radius": "0px",
-        "inner_project_radius": "10px",
-        "projectcarousel_boxshadow": "0 0px 0px transparent",
+
+        "project_iframe_src": "/Projects/about_me/index.html",
+
+        "pagination": "true",
+        "pagination_color": "grey",
+        "pagination_active_color": "deeppink",
+        "pagination_hover_color": "black"
+    },
+        "Default": {
+        "background_iframe_src": "",
+        "background_color": "rgba(30, 30, 30)",
+
+        "title": "About me",        
+        "title_navigation_color": "white",
+
+        "project_description": "Experienced Engineer passionate about leveraging sustainable technology to create innovative solutions and enhance user experiences. A challenging project should be considered done.",
+        "project_description_color": "white",
+
+        "background_blur_filter": "drop-shadow(0px 0px 0px transparent)",
+        "background_blur_backdrop_filter": "blur(0px)",      
+
+        "background_blur_color": "transparent",
+        "background_blur_radius": "0px",      
+
+        "background_blur_border": [
+            "0px",
+            "0px",
+            "0px",
+            "0px"
+        ],
+        "background_blur_border_color": [
+            "transparent",
+            "transparent",
+            "transparent",
+            "transparent"
+        ],
 
 
-        "background_iframe_src": "https://funmiajayiportfolio.my.canva.site/funmi-ajayi-com",
+        "left_navigation_color": "white",
+        "right_navigation_color": "white",
+
+        "inner_project_filter": "drop-shadow(0px 0px 0px transparent)",
+        "inner_project_box_shadow": "0 0px 0px transparent",    
+        "inner_project_backdrop_filter": "blur(0px)",     
+
+        "inner_project_color": "transparent",
+        "inner_project_radius": "10px",        
+        
+        "inner_project_border": [
+            "7px",
+            "7px",
+            "7px",
+            "7px"
+        ],
+        "inner_project_border_color": [
+            "var(--rgb-color-long)",
+            "var(--rgb-color-long)",
+            "var(--rgb-color-long)",
+            "var(--rgb-color-long)"
+        ],
+
         "project_iframe_src": "https://testingground-e4bfd.web.app/",
 
-
-        "project_description": "",
-
-
         "pagination": "true",
-        "pagination_color": "transparent",
-        "pagination_active_color": "transparent",
-        "pagination_hover_color": "transparent"
-    },
-"Car test": {
-        "title": "Baby Nani",        
-        "title_navigation_color": "black",
-
-
-        "background_color": "white",
-
-
-        "backgroundblur_filter": "drop-shadow(0px 0px 0px transparent)",
-        "backgroundblur_color": "rgba(0,0,0,0.3)",
-        "backgroundblur_backdropfilter": "blur(0px)",
-        "backgroundblur_border": [
-            "0px",
-            "0px",
-            "0px",
-            "0px"
-        ],
-        "backgroundblur_bordercolor": [
-            "transparent",
-            "transparent",
-            "transparent",
-            "transparent"
-        ],
-        "backgroundblur_radius": "0px",
-
-
-        "left_navigation_color": "black",
-        "right_navigation_color": "black",
-
-
-        "projectcarousel_filter": "drop-shadow(0px 0px 0px transparent)",
-        "projectcarousel_color": "transparent",
-        "projectcarousel_backdropfilter": "blur(0px)",
-        "projectcarousel_border": [
-            "0px",
-            "0px",
-            "0px",
-            "0px"
-        ],
-        "projectcarousel_bordercolor": [
-            "transparent",
-            "transparent",
-            "transparent",
-            "transparent"
-        ],
-        "projectcarousel_radius": "0px",
-        "inner_project_radius": "0px",
-        "projectcarousel_boxshadow": "0px 0px 0px transparent",
-
-
-        "background_iframe_src": "https://testingground-e4bfd.web.app/",
-        "project_iframe_src": "",
-
-
-        "project_description": "Baby nina or Baby junior??",
-
-
-        "pagination": "true",
-        "pagination_color": "transparent",
-        "pagination_active_color": "transparent",
-        "pagination_hover_color": "transparent"
+        "pagination_color": "white",
+        "pagination_active_color": "white",
+        "pagination_hover_color": "smokegray"
     }
 }
