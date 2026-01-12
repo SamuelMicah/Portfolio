@@ -1,6 +1,6 @@
 {
     "About Me": {
-        "background_iframe_src": "",
+        "background_iframe_src": "/Projects/about_me/background/index.html",
         "background_color": "rgba(30, 30, 30)",
 
         "title": "About me 👋",        
@@ -47,9 +47,9 @@
         ],
         "inner_project_border_color": [
             "transparent",
-            "var(--rgb-color-long)",
-            "var(--rgb-color-long)",
-            "var(--rgb-color-long)"
+            "transparent",
+            "deeppink",
+            "deeppink"
         ],
 
         "project_iframe_src": "/Projects/about_me/index.html",
@@ -60,14 +60,14 @@
         "pagination_hover_color": "black"
     },
         "Default": {
-        "background_iframe_src": "",
-        "background_color": "rgba(30, 30, 30)",
+        "background_iframe_src": "https://testingground-e4bfd.web.app/",
+        "background_color": "transparent",
 
-        "title": "About me",        
+        "title": "Unity Webgl Game Test",        
         "title_navigation_color": "white",
 
-        "project_description": "Experienced Engineer passionate about leveraging sustainable technology to create innovative solutions and enhance user experiences. A challenging project should be considered done.",
-        "project_description_color": "white",
+        "project_description": "",
+        "project_description_color": "transparent",
 
         "background_blur_filter": "drop-shadow(0px 0px 0px transparent)",
         "background_blur_backdrop_filter": "blur(0px)",      
@@ -112,11 +112,11 @@
             "var(--rgb-color-long)"
         ],
 
-        "project_iframe_src": "https://testingground-e4bfd.web.app/",
+        "project_iframe_src": "",
 
         "pagination": "true",
-        "pagination_color": "white",
-        "pagination_active_color": "white",
-        "pagination_hover_color": "smokegray"
+        "pagination_color": "grey",
+        "pagination_active_color": "deeppink",
+        "pagination_hover_color": "black"
     }
 }
