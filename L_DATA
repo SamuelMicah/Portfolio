@@ -121,7 +121,7 @@
     },
         "Three-Tier Architecture OS App": {
         "background_iframe_src": "",
-        "background_color": "transparent",
+        "background_color": "black",
 
         "title": "Three-Tier Architecture OS App",        
         "title_navigation_color": "white",
