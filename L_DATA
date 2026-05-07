@@ -59,11 +59,11 @@
         "pagination_active_color": "deeppink",
         "pagination_hover_color": "black"
     },
-        "Default": {
-        "background_iframe_src": "https://testingground-e4bfd.web.app/",
+        "Interactive Cloud Solutions": {
+        "background_iframe_src": "",
         "background_color": "transparent",
 
-        "title": "Unity Webgl Game Test",        
+        "title": "Interactive Cloud Solutions",        
         "title_navigation_color": "white",
 
         "project_description": "",
@@ -97,19 +97,19 @@
         "inner_project_backdrop_filter": "blur(0px)",     
 
         "inner_project_color": "transparent",
-        "inner_project_radius": "10px",        
+        "inner_project_radius": "20px",        
         
         "inner_project_border": [
-            "7px",
-            "7px",
-            "7px",
-            "7px"
+            "1px",
+            "1px",
+            "1px",
+            "1px"
         ],
         "inner_project_border_color": [
-            "var(--rgb-color-long)",
-            "var(--rgb-color-long)",
-            "var(--rgb-color-long)",
-            "var(--rgb-color-long)"
+            "deeppink",
+            "deeppink",
+            "deeppink",
+            "deeppink"
         ],
 
         "project_iframe_src": "",
