@@ -63,7 +63,7 @@
     },
         "Interactive Cloud Solutions": {
         "background_iframe_src": "",
-        "background_video_src": "",
+        "background_video_src": "https://raw.githubusercontent.com/SamuelMicah/Portfolio/main/Projects/Interactive%20Cloud%20Solutions/aws_background_loop.mp4",
 
         "background_color": "transparent",
 
@@ -125,7 +125,7 @@
     },
         "Three-Tier Architecture OS App": {
         "background_iframe_src": "",
-        "background_video_src": "https://raw.githubusercontent.com/SamuelMicah/Portfolio/main/Projects/Interactive%20Cloud%20Solutions/aws_background_loop.mp4",
+        "background_video_src": "",
 
         "background_color": "transparent",
 
