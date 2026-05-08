@@ -101,7 +101,7 @@
         "inner_project_backdrop_filter": "blur(20px)",     
 
         "inner_project_color": "rgba(30, 30, 30, 0.3)",
-        "inner_project_radius": "8px",        
+        "inner_project_radius": "2px",        
         
         "inner_project_border": [
             "0px",
