@@ -100,7 +100,7 @@
         "inner_project_box_shadow": "0 0px 0px transparent",    
         "inner_project_backdrop_filter": "blur(20px)",     
 
-        "inner_project_color": "rgba(30, 30, 30, 0.3)",
+        "inner_project_color": "rgba(30, 30, 30, 0.1)",
         "inner_project_radius": "2px",        
         
         "inner_project_border": [
