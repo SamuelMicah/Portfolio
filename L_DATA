@@ -104,16 +104,16 @@
         "inner_project_radius": "20px",        
         
         "inner_project_border": [
-            "1px",
-            "1px",
-            "1px",
-            "1px"
+            "0px",
+            "0px",
+            "0px",
+            "0px"
         ],
         "inner_project_border_color": [
-            "deeppink",
-            "deeppink",
-            "deeppink",
-            "deeppink"
+            "transparent",
+            "transparent",
+            "transparent",
+            "transparent"
         ],
 
         "project_iframe_src": "",
