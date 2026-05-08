@@ -1,6 +1,8 @@
 {
     "About Me": {
         "background_iframe_src": "/Projects/about_me/background/index.html",
+        "background_video_src": "",
+
         "background_color": "rgba(30, 30, 30)",
 
         "title": "About me 👋",        
@@ -61,6 +63,8 @@
     },
         "Interactive Cloud Solutions": {
         "background_iframe_src": "",
+        "background_video_src": "",
+
         "background_color": "transparent",
 
         "title": "Interactive Cloud Solutions",        
@@ -121,7 +125,9 @@
     },
         "Three-Tier Architecture OS App": {
         "background_iframe_src": "",
-        "background_color": "black",
+        "background_video_src": "https://raw.githubusercontent.com/SamuelMicah/Portfolio/main/Projects/Interactive%20Cloud%20Solutions/aws_background_loop.mp4",
+
+        "background_color": "transparent",
 
         "title": "Three-Tier Architecture OS App",        
         "title_navigation_color": "white",
