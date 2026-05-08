@@ -100,8 +100,8 @@
         "inner_project_box_shadow": "0 0px 0px transparent",    
         "inner_project_backdrop_filter": "blur(20px)",     
 
-        "inner_project_color": "rgba(255, 255, 255, 0.3)",
-        "inner_project_radius": "20px",        
+        "inner_project_color": "rgba(30, 30, 30, 0.3)",
+        "inner_project_radius": "8px",        
         
         "inner_project_border": [
             "0px",
@@ -129,10 +129,10 @@
 
         "background_color": "transparent",
 
-        "title": "Three-Tier Architecture OS App",        
+        "title": "",        
         "title_navigation_color": "white",
 
-        "project_description": "This part of the portfolio is a three-teir os simulation app architected and hosted entierely on Amazon AWS.",
+        "project_description": "",
         "project_description_color": "white",
 
         "background_blur_filter": "drop-shadow(0px 0px 0px transparent)",
@@ -160,9 +160,9 @@
 
         "inner_project_filter": "drop-shadow(0px 0px 0px transparent)",
         "inner_project_box_shadow": "0 0px 0px transparent",    
-        "inner_project_backdrop_filter": "blur(10px)",     
+        "inner_project_backdrop_filter": "blur(0px)",     
 
-        "inner_project_color": "rgba(30, 30, 30, 0.1)",
+        "inner_project_color": "transparent",
         "inner_project_radius": "0px",        
         
         "inner_project_border": [
