@@ -302,6 +302,13 @@ function appendProjectIframe(layout) {
     iframe.loading = "lazy";
     iframe.classList.add("h-100", "w-100");
     iframe.style.borderRadius = layout.inner_project_radius;
+    iframe.style.opacity = "0";
+    iframe.style.transition = "opacity 2s ease";
+    iframe.addEventListener("load", () => {
+        requestAnimationFrame(() => {
+            iframe.style.opacity = "1";
+        });
+    }, { once: true });
     carouselItem.appendChild(iframe);
 }
 
@@ -314,6 +321,13 @@ function replaceBackground(layout) {
         iframe.allowFullscreen = true;
         iframe.loading = "lazy";
         iframe.classList.add("h-100", "w-100");
+        iframe.style.opacity = "0";
+        iframe.style.transition = "opacity 2s ease";
+        iframe.addEventListener("load", () => {
+            requestAnimationFrame(() => {
+                iframe.style.opacity = "1";
+            });
+        }, { once: true });
         elements.background.replaceChildren(iframe);
         return;
     }
@@ -328,6 +342,13 @@ function replaceBackground(layout) {
         video.preload = "metadata";
         video.classList.add("h-100", "w-100");
         video.style.objectFit = "cover";
+        video.style.opacity = "0";
+        video.style.transition = "opacity 2s ease";
+        video.addEventListener("loadeddata", () => {
+            requestAnimationFrame(() => {
+                video.style.opacity = "1";
+            });
+        }, { once: true });
         elements.background.replaceChildren(video);
         return;
     }

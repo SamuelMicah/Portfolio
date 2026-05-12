@@ -16,6 +16,15 @@ body {
     height: 100%;
 }
 
+#animation-canvas canvas {
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+#animation-canvas canvas.is-loaded {
+    opacity: 1;
+}
+
 .b{
     border: 2px solid red;
 }

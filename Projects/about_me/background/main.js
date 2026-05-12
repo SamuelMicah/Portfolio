@@ -28,7 +28,7 @@ let mixer;
 const loader = new GLTFLoader();
 const clock = new THREE.Clock();
 
-loader.load(new URL('../../../temp/push_up.glb', import.meta.url).href, (gltf) => {
+loader.load('https://cdn.samuelmicah.com/Portfolio%20Data/about_me/push_up.glb', (gltf) => {
     const model = gltf.scene;
     scene.add(model);
 
@@ -48,6 +48,10 @@ loader.load(new URL('../../../temp/push_up.glb', import.meta.url).href, (gltf) =
         
         action.play(); 
     }
+
+    requestAnimationFrame(() => {
+        renderer.domElement.classList.add('is-loaded');
+    });
 }, undefined, (err) => {
     console.error("Error loading model. Check if the path is correct.", err);
 });

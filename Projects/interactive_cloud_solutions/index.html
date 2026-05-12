@@ -33,6 +33,13 @@
         gap: 20px;
         padding: 20px;
         box-sizing: border-box;
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+
+      .grid-container.is-loading-project {
+        opacity: 0;
+        transform: scale(0.97);
+        pointer-events: none;
       }
 
       .card {
@@ -53,6 +60,22 @@
         overflow: hidden;
         margin: auto;
         container-type: inline-size;
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+        transition:
+          opacity 0.45s ease,
+          transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          box-shadow 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .card.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .grid-container.is-loading-project .card.is-visible {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.96);
       }
 
       .card:hover {
@@ -99,8 +122,29 @@
         width: 100vw;
         height: 100vh;
         background: #000;
-        display: none;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 0.45s ease,
+          visibility 0.45s ease,
+          background-color 0.9s ease;
         z-index: 100;
+      }
+
+      .project-view.is-active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      .project-view.is-background-clear {
+        background: rgba(0, 0, 0, 0);
+      }
+
+      .project-view.is-loading .project-indicator {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       /* Bottom Left Indicator */
@@ -119,6 +163,9 @@
         pointer-events: none;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         font-size: 1.2rem;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 1.4s ease, transform 1.4s ease;
       }
 
       .project-indicator span {
@@ -141,6 +188,12 @@
         height: 100%;
         border: none;
         z-index: 100;
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+
+      iframe.is-loaded {
+        opacity: 1;
       }
 
       .back-btn {
@@ -159,13 +212,85 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition:
+          opacity 0.45s ease,
+          transform 0.45s ease,
+          filter 0.3s,
+          background 0.3s,
+          color 0.3s;
+      }
+
+      .project-view.is-project-ready .back-btn {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .project-view.is-project-ready .project-indicator {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       .back-btn:hover {
-        transform: scale(1.1);
+        transform: translateY(0) scale(1.1);
         filter: brightness(1.2);
         background: rgba(0, 0, 0, 0.6);
         color: var(--accent);
+      }
+
+      #iframeContainer {
+        width: 100%;
+        height: 100%;
+      }
+
+      .loading-overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        z-index: 108;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+
+      .project-view.is-loading .loading-overlay {
+        opacity: 1;
+      }
+
+      .loading-spinner {
+        width: clamp(28px, 4vw, 44px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: 3px solid rgba(255, 255, 255, 0.18);
+        border-top-color: var(--accent);
+        animation: spin 0.85s linear infinite;
+        box-shadow: 0 0 18px rgba(255, 20, 147, 0.25);
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .grid-container,
+        .card,
+        .project-view,
+        iframe,
+        .project-indicator,
+        .back-btn,
+        .loading-overlay {
+          transition-duration: 0.01ms;
+        }
+
+        .loading-spinner {
+          animation-duration: 1.8s;
+        }
       }
     </style>
   </head>
@@ -173,7 +298,7 @@
     <div class="grid-container" id="grid"></div>
 
     <div class="project-view" id="projectView">
-      <button class="back-btn" onclick="closeProject()">
+      <button class="back-btn" id="backButton" type="button">
         <svg
           width="20"
           height="20"
@@ -198,6 +323,10 @@
       </div>
 
       <div id="iframeContainer" style="width: 100%; height: 100%"></div>
+
+      <div class="loading-overlay" aria-live="polite" aria-label="Loading project">
+        <div class="loading-spinner" aria-hidden="true"></div>
+      </div>
     </div>
 
     <script>
@@ -213,8 +342,121 @@
       const view = document.getElementById("projectView");
       const container = document.getElementById("iframeContainer");
       const projectText = document.getElementById("projectText");
+      const backButton = document.getElementById("backButton");
 
       const totalToShow = Math.min(myProjects.length, 12);
+      const CARD_REVEAL_DURATION = 2000;
+      const MIN_LOADING_DURATION = 2000;
+      let activeIframe = null;
+      let minLoadTimeout = null;
+      let maxLoadTimeout = null;
+      let backgroundFadeTimeout = null;
+      let loadingStartedAt = 0;
+      let activeIframeLoaded = false;
+      let minimumLoadingComplete = false;
+
+      function shuffledIndexes(length) {
+        return Array.from({ length }, (_, index) => index).sort(() => Math.random() - 0.5);
+      }
+
+      function revealCardsRandomly() {
+        const cards = Array.from(grid.querySelectorAll(".card"));
+        const delay = cards.length > 1 ? CARD_REVEAL_DURATION / (cards.length - 1) : 0;
+
+        grid.classList.remove("is-loading-project");
+        shuffledIndexes(cards.length).forEach((cardIndex, order) => {
+          const card = cards[cardIndex];
+          card.classList.remove("is-visible");
+          window.setTimeout(() => card.classList.add("is-visible"), order * delay);
+        });
+      }
+
+      function hideCardsRandomly(onComplete) {
+        const cards = Array.from(grid.querySelectorAll(".card"));
+        shuffledIndexes(cards.length).forEach((cardIndex, order) => {
+          window.setTimeout(() => cards[cardIndex].classList.remove("is-visible"), order * 45);
+        });
+
+        window.setTimeout(onComplete, cards.length * 45 + 220);
+      }
+
+      function finishLoading(iframe) {
+        if (iframe !== activeIframe) return;
+
+        activeIframeLoaded = true;
+        revealProjectWhenReady(iframe);
+      }
+
+      function revealProjectWhenReady(iframe) {
+        if (iframe !== activeIframe || !activeIframeLoaded || !minimumLoadingComplete) return;
+        const elapsed = performance.now() - loadingStartedAt;
+        const remaining = Math.max(0, MIN_LOADING_DURATION - elapsed);
+
+        window.clearTimeout(maxLoadTimeout);
+        window.setTimeout(() => {
+          if (iframe !== activeIframe || !activeIframeLoaded || !minimumLoadingComplete) return;
+          view.classList.remove("is-loading");
+          view.classList.add("is-project-ready");
+          iframe.classList.add("is-loaded");
+        }, remaining);
+      }
+
+      function openProject(project) {
+        if (activeIframe) return;
+
+        hideCardsRandomly(() => {
+          grid.classList.add("is-loading-project");
+          view.classList.remove("is-background-clear", "is-project-ready");
+          projectText.innerText = project.title;
+
+          const iframe = document.createElement("iframe");
+          iframe.src = project.url;
+          iframe.title = project.title;
+          iframe.loading = "eager";
+          activeIframe = iframe;
+          activeIframeLoaded = false;
+          minimumLoadingComplete = false;
+          loadingStartedAt = performance.now();
+
+          iframe.addEventListener("load", () => finishLoading(iframe), { once: true });
+          container.replaceChildren(iframe);
+
+          view.classList.add("is-active", "is-loading");
+
+          backgroundFadeTimeout = window.setTimeout(() => {
+            if (iframe === activeIframe) view.classList.add("is-background-clear");
+          }, 300);
+
+          minLoadTimeout = window.setTimeout(() => {
+            minimumLoadingComplete = true;
+            revealProjectWhenReady(iframe);
+          }, MIN_LOADING_DURATION);
+
+          maxLoadTimeout = window.setTimeout(() => {
+            finishLoading(iframe);
+          }, MIN_LOADING_DURATION);
+        });
+      }
+
+      function closeProject() {
+        if (!activeIframe) return;
+
+        window.clearTimeout(minLoadTimeout);
+        window.clearTimeout(maxLoadTimeout);
+        window.clearTimeout(backgroundFadeTimeout);
+        minimumLoadingComplete = false;
+        activeIframeLoaded = false;
+        activeIframe.classList.remove("is-loaded");
+        view.classList.remove("is-loading");
+        view.classList.remove("is-project-ready");
+
+        window.setTimeout(() => {
+          view.classList.remove("is-active", "is-background-clear");
+          container.replaceChildren();
+          activeIframe = null;
+          revealCardsRandomly();
+        }, 420);
+      }
 
       for (let i = 0; i < totalToShow; i++) {
         const project = myProjects[i];
@@ -225,25 +467,13 @@
                 <div class="description">Launch Experience</div>
             `;
 
-        card.onclick = () => {
-          const iframe = document.createElement("iframe");
-          iframe.src = project.url;
-          container.appendChild(iframe);
-
-          projectText.innerText = project.title;
-
-          grid.style.display = "none";
-          view.style.display = "block";
-        };
+        card.addEventListener("click", () => openProject(project));
 
         grid.appendChild(card);
       }
 
-      function closeProject() {
-        view.style.display = "none";
-        grid.style.display = "grid";
-        container.innerHTML = "";
-      }
+      backButton.addEventListener("click", closeProject);
+      revealCardsRandomly();
     </script>
   </body>
 </html>

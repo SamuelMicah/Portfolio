@@ -118,7 +118,7 @@
             "transparent"
         ],
 
-        "project_iframe_src": "./Projects/interactive_cloud_solutions/index.html",
+        "project_iframe_src": "./Projects/interactive_cloud_solutions/index.html?v=rebuild-20260512",
 
         "pagination": "true",
         "pagination_color": "grey",

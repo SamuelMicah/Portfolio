@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const USE_SCROLL_ANIMATION = true;
-const MODEL_URL = new URL('../temp/push_up.glb', import.meta.url).href;
+const MODEL_URL = 'https://cdn.samuelmicah.com/Portfolio%20Data/about_me/push_up.glb';
 const MAX_PIXEL_RATIO = 1.5;
 
 const container = document.getElementById('3d-viewport');
@@ -33,6 +33,8 @@ function setupScene() {
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, MAX_PIXEL_RATIO));
     resizeRenderer();
+    renderer.domElement.style.opacity = "0";
+    renderer.domElement.style.transition = "opacity 2s ease";
     container.appendChild(renderer.domElement);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -89,6 +91,9 @@ function loadModel() {
         isLoaded = true;
         updateScrollAnimation();
         renderLoop();
+        requestAnimationFrame(() => {
+            renderer.domElement.style.opacity = "1";
+        });
     }, undefined, (err) => console.error("Error loading model:", err));
 }
 
