@@ -7,3 +7,5 @@
 !.vscode/extensions.json
 !.vscode/launch.json
 !.vscode/tasks.json
+
+**/temp/
