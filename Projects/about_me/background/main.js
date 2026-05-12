@@ -12,7 +12,7 @@ const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container
 // Renderer
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 renderer.setSize(container.clientWidth, container.clientHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 container.appendChild(renderer.domElement);
 
 // Lights
@@ -29,7 +29,7 @@ const loader = new GLTFLoader();
 const clock = new THREE.Clock();
 
 // Using root-relative path as discussed
-loader.load('./temp/push_up.glb', (gltf) => {
+loader.load(new URL('../../../temp/push_up.glb', import.meta.url).href, (gltf) => {
     const model = gltf.scene;
     scene.add(model);
 
@@ -91,8 +91,6 @@ window.addEventListener('resize', () => {
     const width = container.clientWidth;
     const height = container.clientHeight;
     
-    console.log('Resize detected:', width, 'x', height); // Debug log
-
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
@@ -106,12 +104,8 @@ startPAnimation();
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            // Iframe is visible: Start the engine
-            console.log("Iframe visible: Starting animation");
             startPAnimation();
         } else {
-            // Iframe is hidden or removed: Stop the engine
-            console.log("Iframe hidden/removed: Stopping animation");
             stopPAnimation();
         }
     });
@@ -119,4 +113,3 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe the body of the iframe document
 observer.observe(document.body);
-

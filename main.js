@@ -1,14 +1,29 @@
-import { startPAnimation, stopPAnimation } from "./P/animations.js";
-import { cleanupLandscape } from "./L/main.js";
 import animationManager from "./utils/animationManager.js";
+
+const MODULE_VERSION = "perf-20260512";
 
 const portraitView = document.getElementById("portrait-view");
 const landscapeView = document.getElementById("landscape-view");
 
 const mediaQuery = window.matchMedia("(max-width: 768px) or (orientation: portrait)");
 
-let currentMode = null; // Track current mode to avoid unnecessary switches
+let currentMode = null;
 let debounceTimer = null;
+let orientationVersion = 0;
+let portraitModulePromise = null;
+let portraitAnimationPromise = null;
+let landscapeModulePromise = null;
+
+function loadPortrait() {
+    portraitModulePromise ??= import(`./P/main.js?v=${MODULE_VERSION}`);
+    portraitAnimationPromise ??= import(`./P/animations.js?v=${MODULE_VERSION}`);
+    return Promise.all([portraitModulePromise, portraitAnimationPromise]);
+}
+
+function loadLandscape() {
+    landscapeModulePromise ??= import(`./L/main.js?v=${MODULE_VERSION}`);
+    return landscapeModulePromise;
+}
 
 /**
  * Debounce utility to prevent rapid orientation change handling
@@ -27,8 +42,9 @@ function debounce(func, delay = 150) {
  * Handle orientation/viewport changes
  * @param {MediaQueryListEvent|MediaQueryList} e - Media query event
  */
-function handleOrientationChange(e) {
+async function handleOrientationChange(e) {
     const isPortrait = e.matches;
+    const version = ++orientationVersion;
     
     // Avoid unnecessary mode switches
     if (currentMode === (isPortrait ? 'portrait' : 'landscape')) {
@@ -38,33 +54,40 @@ function handleOrientationChange(e) {
     if (isPortrait) {
         // === PORTRAIT MODE ===
         currentMode = 'portrait';
-        
-        // Cleanup landscape resources first
-        if (typeof cleanupLandscape === 'function') {
-            cleanupLandscape();
+
+        if (landscapeModulePromise) {
+            const landscape = await landscapeModulePromise;
+            if (version !== orientationVersion) return;
+            landscape.cleanupLandscape?.();
         }
-        
+
         portraitView.classList.remove("hidden");
         landscapeView.classList.add("hidden");
 
-        // Start portrait animations after DOM is ready
+        const [portrait, animations] = await loadPortrait();
+        if (version !== orientationVersion) return;
+        portrait.initPortrait?.();
+
         requestAnimationFrame(() => {
-            if (typeof startPAnimation === 'function') {
-                startPAnimation();
-            }
+            if (version === orientationVersion) animations.startPAnimation?.();
         });
 
     } else {
         // === LANDSCAPE MODE ===
         currentMode = 'landscape';
-        
-        // Stop portrait animations first
-        if (typeof stopPAnimation === 'function') {
-            stopPAnimation();
+
+        if (portraitAnimationPromise) {
+            const animations = await portraitAnimationPromise;
+            if (version !== orientationVersion) return;
+            animations.stopPAnimation?.();
         }
-        
+
         landscapeView.classList.remove("hidden");
         portraitView.classList.add("hidden");
+
+        const landscape = await loadLandscape();
+        if (version !== orientationVersion) return;
+        landscape.initLandscape?.();
     }
 }
 
@@ -81,13 +104,15 @@ mediaQuery.addEventListener("change", debouncedOrientationChange);
 document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
         // Page is hidden, pause animations to save resources
-        if (currentMode === 'portrait' && typeof stopPAnimation === 'function') {
-            stopPAnimation();
+        if (currentMode === 'portrait' && portraitAnimationPromise) {
+            portraitAnimationPromise.then(module => module.stopPAnimation?.());
         }
     } else {
         // Page is visible again, resume animations
-        if (currentMode === 'portrait' && typeof startPAnimation === 'function') {
-            requestAnimationFrame(() => startPAnimation());
+        if (currentMode === 'portrait' && portraitAnimationPromise) {
+            requestAnimationFrame(() => {
+                portraitAnimationPromise.then(module => module.startPAnimation?.());
+            });
         }
     }
 });
@@ -95,11 +120,7 @@ document.addEventListener("visibilitychange", () => {
 // Cleanup on page unload
 window.addEventListener("beforeunload", () => {
     clearTimeout(debounceTimer);
-    if (typeof stopPAnimation === 'function') {
-        stopPAnimation();
-    }
-    if (typeof cleanupLandscape === 'function') {
-        cleanupLandscape();
-    }
+    portraitAnimationPromise?.then(module => module.stopPAnimation?.());
+    landscapeModulePromise?.then(module => module.cleanupLandscape?.());
     animationManager.cleanupAll();
 });

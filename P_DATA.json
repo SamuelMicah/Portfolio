@@ -11,7 +11,7 @@
   
   "contact": {
     "email": "samuelmicah02@gmail.com",
-    "cvUrl": "/utils/Samuel_Micah_CV.pdf"
+    "cvUrl": "./Projects/Samuel_Micah_CV.pdf"
   },
 
   "socials": [
@@ -39,22 +39,22 @@
 
   "certs": [
     {
-      "img": "/P/Images/image.png",
+      "img": "./P/Images/image.png",
       "name": "AWS Cloud Practitioner",
       "url": "https://www.credly.com/badges/53ec01b9-468c-4126-ac18-969e3d2acf1f/linked_in_profile"
     },
     {
-      "img": "/P/Images/image-2.png",
+      "img": "./P/Images/image-2.png",
       "name": "AWS Solutions Architect",
       "url": "#"
     },
     {
-      "img": "/P/Images/image-3.png",
+      "img": "./P/Images/image-3.png",
       "name": "AWS Developer",
       "url": "#"
     },
     {
-      "img": "/P/Images/image-4.png",
+      "img": "./P/Images/image-4.png",
       "name": "AWS DevOps Engineer",
       "url": "#"
     }

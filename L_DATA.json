@@ -1,6 +1,6 @@
 {
     "About Me": {
-        "background_iframe_src": "/Projects/about_me/background/index.html",
+        "background_iframe_src": "./Projects/about_me/background/index.html?v=perf-20260512",
         "background_video_src": "",
 
         "background_color": "rgb(10, 10, 10)",
@@ -18,12 +18,13 @@
         "background_blur_color": "transparent",
         "background_blur_radius": "0px",      
 
-        "background_blur_border": [
-            "0px",
-            "0px",
-            "0px",
-            "0px"
-        ],
+        "background_blur_border": {
+            "top": "0px",
+            "right": "0px",
+            "bottom": "0px",
+            "left": "0px"
+        },
+
         "background_blur_border_color": [
             "transparent",
             "transparent",
@@ -55,7 +56,7 @@
             "deeppink"
         ],
 
-        "project_iframe_src": "/Projects/about_me/index.html",
+        "project_iframe_src": "./Projects/about_me/index.html?v=perf-20260512",
 
         "pagination": "true",
         "pagination_color": "grey",
@@ -117,7 +118,7 @@
             "transparent"
         ],
 
-        "project_iframe_src": "/Projects/interactive_cloud_solutions/index.html",
+        "project_iframe_src": "./Projects/interactive_cloud_solutions/index.html",
 
         "pagination": "true",
         "pagination_color": "grey",

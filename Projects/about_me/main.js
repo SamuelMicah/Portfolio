@@ -1,8 +1,16 @@
 // Initialize data
-const DATA = await fetch('/P_DATA.json').then(r => r.json()).catch(err => {
-console.error(err);
-return FALLBACK_DATA;
-});
+const DATA = await fetch(new URL('../../P_DATA.json', import.meta.url).href)
+    .then(r => r.json())
+    .catch(err => {
+        console.error(err);
+        return { socials: [], skills: [], certs: [], contact: {} };
+    });
+
+const portfolioRoot = new URL('../../', import.meta.url);
+
+function fromPortfolioRoot(path) {
+    return new URL(path.replace(/^\.\//, ''), portfolioRoot).href;
+}
 
 function renderSocials() {
 const container = document.getElementById("social-links");
@@ -61,7 +69,7 @@ function renderCerts() {
 
     container.innerHTML = DATA.certs.map(cert => `
         <div class="p-certification" title="${cert.name}" onclick="window.open('${cert.url}', '_blank')" style="cursor: pointer;">
-            <img src="${cert.img}" alt="${cert.name}" class="p-cert-badge" />
+            <img src="${fromPortfolioRoot(cert.img)}" alt="${cert.name}" class="p-cert-badge" />
         </div>
     `).join('');
 }
@@ -94,7 +102,7 @@ function initContactButtons() {
     const cvBtn = document.getElementById('btn-download-cv');
 
     if (cvBtn && DATA.contact.cvUrl) {
-        cvBtn.addEventListener('click', () => window.open(DATA.contact.cvUrl, '_blank'));
+        cvBtn.addEventListener('click', () => window.open(fromPortfolioRoot(DATA.contact.cvUrl), '_blank'));
     }
 }
 

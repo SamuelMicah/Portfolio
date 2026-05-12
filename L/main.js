@@ -1,3 +1,4 @@
+import { loadDataSafely, LandscapeDataURL } from "../utils/data.js";
 import animationManager from "../utils/animationManager.js";
 
 // Animation timing constants
@@ -10,72 +11,40 @@ const ANIMATION_DURATION = {
 // Fallback data
 const FALLBACK_DATA = {
     "About Me": {
-        "background_iframe_src": "/Projects/about_me/background/index.html",
-        "background_video_src": "",
-
-        "background_color": "rgb(10, 10, 10)",
-
-        "title": "About me 👋",        
-        "title_navigation_color": "white",
-
-        "project_description": "Experienced Engineer passionate about leveraging sustainable technology to create innovative solutions and enhance user experiences. A challenging project should be considered done.",
-        "project_description_color": "white",
-
-        "background_blur_filter": "drop-shadow(0px 0px 0px transparent)",
-        "background_blur_backdrop_filter": "blur(0px)",      
-
-        "background_blur_color": "transparent",
-        "background_blur_radius": "0px",      
-
-        "background_blur_border": [
-            "0px",
-            "0px",
-            "0px",
-            "0px"
-        ],
-        "background_blur_border_color": [
-            "transparent",
-            "transparent",
-            "transparent",
-            "transparent"
-        ],
-
-
-        "left_navigation_color": "white",
-        "right_navigation_color": "white",
-
-        "inner_project_filter": "drop-shadow(0px 0px 0px transparent)",
-        "inner_project_box_shadow": "0 0px 0px transparent",    
-        "inner_project_backdrop_filter": "blur(0px)",     
-
-        "inner_project_color": "transparent",
-        "inner_project_radius": "10px",        
-        
-        "inner_project_border": [
-            "0px",
-            "0px",
-            "7px",
-            "7px"
-        ],
-        "inner_project_border_color": [
-            "transparent",
-            "transparent",
-            "deeppink",
-            "deeppink"
-        ],
-
-        "project_iframe_src": "/Projects/about_me/index.html",
-
-        "pagination": "true",
-        "pagination_color": "grey",
-        "pagination_active_color": "deeppink",
-        "pagination_hover_color": "black"
+        background_iframe_src: "",
+        background_color: "rgba(30, 30, 30)",
+        title: "Loading...",
+        title_navigation_color: "white",
+        project_description: "Loading portfolio data...",
+        project_description_color: "white",
+        background_blur_filter: "drop-shadow(0px 0px 0px transparent)",
+        background_blur_backdrop_filter: "blur(0px)",
+        background_blur_color: "transparent",
+        background_blur_radius: "0px",
+        background_blur_border: ["0px", "0px", "0px", "0px"],
+        background_blur_border_color: ["transparent", "transparent", "transparent", "transparent"],
+        left_navigation_color: "white",
+        right_navigation_color: "white",
+        inner_project_filter: "drop-shadow(0px 0px 0px transparent)",
+        inner_project_box_shadow: "0 0px 0px transparent",
+        inner_project_backdrop_filter: "blur(0px)",
+        inner_project_color: "transparent",
+        inner_project_radius: "10px",
+        inner_project_border: ["0px", "0px", "0px", "0px"],
+        inner_project_border_color: ["transparent", "transparent", "transparent", "transparent"],
+        project_iframe_src: "",
+        pagination: "true",
+        pagination_color: "grey",
+        pagination_active_color: "deeppink",
+        pagination_hover_color: "black"
     }
 };
 
+let DATA;
 let numberOfCarousels = 0;
 let activeCarousel = 0;
 let isTransitioning = false;
+let isInitialized = false;
 // Remove activeAnimations Set - now managed by animationManager
 
 // DOM element references (cached for performance)
@@ -91,6 +60,22 @@ const elements = {
     carouselIndicators: document.getElementById("L-carousel-indicators"),
     loadingContainer: document.getElementById("L-loading-animation-container")
 };
+
+// Initialize data
+async function initData() {
+    try {
+        DATA = await loadDataSafely(
+            new URL('../L_DATA.json', import.meta.url).href,
+            LandscapeDataURL,
+            FALLBACK_DATA
+        );
+        return true;
+    } catch (error) {
+        console.error('Fatal error loading landscape data:', error);
+        DATA = FALLBACK_DATA;
+        return false;
+    }
+}
 
 // Utility: Escape HTML
 function escapeHtml(unsafe) {
@@ -142,8 +127,9 @@ function initButtons() {
 // Initialize pagination dots
 function initPagination() {
     if (!elements.carouselIndicators) return;
-    
+
     elements.carouselIndicators.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     for (let i = 0; i < numberOfCarousels; i++) {
         const dot = document.createElement("div");
@@ -174,8 +160,10 @@ function initPagination() {
             }
         });
 
-        elements.carouselIndicators.appendChild(dot);
+        fragment.appendChild(dot);
     }
+
+    elements.carouselIndicators.appendChild(fragment);
 }
 
 // Build inner carousel HTML
@@ -238,6 +226,14 @@ function updatePaginationDots(index) {
     dots.forEach((dot, i) => {
         dot.classList.toggle("active", i === index);
     });
+}
+
+function getBorderValues(border) {
+    if (Array.isArray(border)) return border;
+    if (border && typeof border === "object") {
+        return [border.top, border.right, border.bottom, border.left];
+    }
+    return ["0px", "0px", "0px", "0px"];
 }
 
 // Toggle navigation buttons
@@ -406,28 +402,26 @@ function loadLayout(layout) {
 
     // Load background iframe or video
     if(elements.background) {
-        console.log('1');
         if (layout.background_iframe_src) {
             const innerBackground = document.createElement("iframe");
             innerBackground.src = layout.background_iframe_src;
             innerBackground.allowFullscreen = true;
             innerBackground.classList.add("h-100", "w-100");
             innerBackground.setAttribute("loading", "lazy");
-            elements.background.innerHTML = "";
-            elements.background.appendChild(innerBackground);
+            elements.background.replaceChildren(innerBackground);
         }
 
         if (layout.background_video_src) {
-            console.log('2');
             const video = document.createElement("video");
             video.src = layout.background_video_src;
             video.autoplay = true;
             video.loop = true;
             video.muted = true;
+            video.playsInline = true;
+            video.preload = "metadata";
             video.classList.add("h-100", "w-100");
             video.style.objectFit = "cover";
-            elements.background.innerHTML = "";
-            elements.background.appendChild(video);
+            elements.background.replaceChildren(video);
         }
     }
 
@@ -461,29 +455,31 @@ function loadLayout(layout) {
     if (elements.rightNav) elements.rightNav.style.color = layout.right_navigation_color;
 
     if (elements.backgroundBlur) {
+        const border = getBorderValues(layout.background_blur_border);
         elements.backgroundBlur.style.cssText = `
             background-color: ${layout.background_blur_color};
             filter: ${layout.background_blur_filter};
             backdrop-filter: ${layout.background_blur_backdrop_filter};
             -webkit-backdrop-filter: ${layout.background_blur_backdrop_filter};
-            border-top: ${layout.background_blur_border[0]} solid ${layout.background_blur_border_color[0]};
-            border-right: ${layout.background_blur_border[1]} solid ${layout.background_blur_border_color[1]};
-            border-bottom: ${layout.background_blur_border[2]} solid ${layout.background_blur_border_color[2]};
-            border-left: ${layout.background_blur_border[3]} solid ${layout.background_blur_border_color[3]};
+            border-top: ${border[0]} solid ${layout.background_blur_border_color[0]};
+            border-right: ${border[1]} solid ${layout.background_blur_border_color[1]};
+            border-bottom: ${border[2]} solid ${layout.background_blur_border_color[2]};
+            border-left: ${border[3]} solid ${layout.background_blur_border_color[3]};
             border-radius: ${layout.background_blur_radius};
         `;
     }
 
     if (elements.projectCarousel) {
+        const border = getBorderValues(layout.inner_project_border);
         elements.projectCarousel.style.cssText = `
             background-color: ${layout.inner_project_color};
             filter: ${layout.inner_project_filter};
             backdrop-filter: ${layout.inner_project_backdrop_filter};
             -webkit-backdrop-filter: ${layout.inner_project_backdrop_filter};
-            border-top: ${layout.inner_project_border[0]} solid ${layout.inner_project_border_color[0]};
-            border-right: ${layout.inner_project_border[1]} solid ${layout.inner_project_border_color[1]};
-            border-bottom: ${layout.inner_project_border[2]} solid ${layout.inner_project_border_color[2]};
-            border-left: ${layout.inner_project_border[3]} solid ${layout.inner_project_border_color[3]};
+            border-top: ${border[0]} solid ${layout.inner_project_border_color[0]};
+            border-right: ${border[1]} solid ${layout.inner_project_border_color[1]};
+            border-bottom: ${border[2]} solid ${layout.inner_project_border_color[2]};
+            border-left: ${border[3]} solid ${layout.inner_project_border_color[3]};
             border-radius: ${layout.inner_project_radius};
             box-shadow: ${layout.inner_project_box_shadow};
         `;
@@ -507,7 +503,7 @@ function unloadLayout() {
             background-color: transparent;
             opacity: 0;
         `;
-        elements.background.innerHTML = "";
+        elements.background.replaceChildren();
     }
 
     if (elements.backgroundBlur) {
@@ -544,33 +540,40 @@ function unloadLayout() {
 export function cleanupLandscape() {
     // Use animation manager for comprehensive cleanup
     animationManager.cleanupAll();
+    unloadLayout();
     
     // Additional landscape-specific cleanup
     isTransitioning = false;
 }
 
 // Initialize everything
-async function init() {
+export async function initLandscape() {
+    if (isInitialized) {
+        loadLayout(DATA[sortedData[activeCarousel]]);
+        return;
+    }
+
+    const success = await initData();
+
+    if (!success) {
+        console.error('Failed to initialize landscape data');
+    }
+
     sortedData = sortData();
-    
+
     initButtons();
     buildInnerCarouselContent();
-    
+
     numberOfCarousels = Array.from(elements.projectCarousel.querySelectorAll('.carousel-item')).length;
-    
+
     setupCarouselEvents();
     initPagination();
-    
-    const firstLayout = DATA[sortedData[0]];
-    if (firstLayout) {
-        loadLayout(firstLayout);
+
+    if (window.location.pathname.match(/\/project\/(\d+)/)) {
+        const match = window.location.pathname.match(/\/project\/(\d+)/);
+        loadLayout(DATA[sortedData[match[1]]]);
+    } else {
+        loadLayout(DATA[sortedData[0]]);
     }
+    isInitialized = true;
 }
-
-// Initialize data
-const DATA = await fetch('/P_DATA.json').then(r => r.json()).catch(err => {
-console.error(err);
-return FALLBACK_DATA;
-});
-
-init();

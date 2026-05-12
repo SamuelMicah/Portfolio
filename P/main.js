@@ -1,4 +1,5 @@
 import imageOptimizer from "../utils/imageOptimizer.js";
+import { loadDataSafely, PortraitDataURL } from "../utils/data.js";
 
 // Fallback data in case all fetches fail
 const FALLBACK_DATA = {
@@ -16,6 +17,9 @@ const FALLBACK_DATA = {
     skills: [],
     projects: []
 };
+
+let DATA = null;
+let isInitialized = false;
 
 /* ================= RENDERERS ================= */
 function renderAbout() {
@@ -44,9 +48,6 @@ function renderAbout() {
 function renderCerts() {
     const container = document.getElementById('certifications-container');
     if (!container || !DATA.certs?.length) return;
-
-    // Identify critical images (first 2 certs are above fold)
-    const criticalImages = DATA.certs.slice(0, 2).map(cert => cert.img);
 
     // Use event delegation instead of inline onclick
     container.innerHTML = DATA.certs.map((cert, index) => {
@@ -290,7 +291,15 @@ function initNav() {
 }
 
 /* ================= INIT ================= */
-async function init() {
+export async function initPortrait() {
+    if (isInitialized) return;
+
+    DATA = await loadDataSafely(
+        new URL('../P_DATA.json', import.meta.url).href,
+        PortraitDataURL,
+        FALLBACK_DATA
+    );
+
     // Render all sections
     renderAbout();
     renderCerts();
@@ -303,14 +312,5 @@ async function init() {
     initTheme();
     initNav();
     
-    console.log("Samuel's Portfolio has now been Loaded 🚀");
+    isInitialized = true;
 }
-
-// Initialize data
-const DATA = await fetch('/L_DATA.json').then(r => r.json()).catch(err => {
-console.error(err);
-return FALLBACK_DATA;
-});
-
-// Start the app
-init();
