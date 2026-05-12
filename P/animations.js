@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const USE_SCROLL_ANIMATION = true;
-const MODEL_URL = 'https://cdn.samuelmicah.com/Portfolio%20Data/about_me/push_up.glb';
+const MODEL_URL = 'https://cdn.samuelmicah.com/Portfolio%20Data/P/rumba_dance.glb';
 const MAX_PIXEL_RATIO = 1.5;
 
 const container = document.getElementById('3d-viewport');
@@ -77,8 +77,8 @@ function loadModel() {
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3()).length();
 
-        camera.position.set(center.x, center.y + size * 0.375, center.z + size * 1.125);
-        camera.lookAt(center);
+        camera.position.set(0.5, 0.3, 4);
+        // camera.lookAt(center);
 
         if (gltf.animations.length > 0) {
             mixer = new THREE.AnimationMixer(model);
