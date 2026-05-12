@@ -1,113 +1,116 @@
-// Initialize data
+import { escapeHtml, resolveUrl } from "../../utils/dom.js";
+
 const DATA = await fetch(new URL('../../P_DATA.json', import.meta.url).href)
-    .then(r => r.json())
-    .catch(err => {
-        console.error(err);
+    .then(response => response.json())
+    .catch(error => {
+        console.error(error);
         return { socials: [], skills: [], certs: [], contact: {} };
     });
 
 const portfolioRoot = new URL('../../', import.meta.url);
 
+const elements = {
+    socials: document.getElementById("social-links"),
+    skillsTrack: document.getElementById("skills-track"),
+    indicators: document.getElementById("carousel-indicators"),
+    certs: document.getElementById('certifications-container'),
+    cvButton: document.getElementById('btn-download-cv'),
+    skillsCarousel: document.getElementById('skillsCarousel')
+};
+
 function fromPortfolioRoot(path) {
-    return new URL(path.replace(/^\.\//, ''), portfolioRoot).href;
+    return resolveUrl(path, portfolioRoot);
 }
 
 function renderSocials() {
-const container = document.getElementById("social-links");
-if (!container) return;
+    if (!elements.socials) return;
 
-container.innerHTML = DATA.socials
-    .map(
-    (s) => `
-        <i class="${s.icon} fab p-social-icon" onclick="window.open('${s.url}', '_blank')"></i>
-    `
-    )
-    .join("");
+    elements.socials.innerHTML = DATA.socials.map(s => `
+        <i class="${escapeHtml(s.icon)} fab p-social-icon"
+           data-social-url="${escapeHtml(s.url)}"
+           role="button"
+           tabindex="0"
+           aria-label="Visit ${escapeHtml(s.icon.replace('fa-', ''))} profile"></i>
+    `).join("");
 }
 
 function renderSkills() {
-const track = document.getElementById("skills-track");
-const indicators = document.getElementById("carousel-indicators");
-if (!track || !indicators) return;
+    if (!elements.skillsTrack || !elements.indicators) return;
 
-track.innerHTML = DATA.skills
-    .map(
-    (slide, index) => `
-<div class="carousel-item ${index === 0 ? "active" : ""}">
-    <p class="p-title h3 mb-3">${slide.title}</p>
-    <ul class="list-unstyled">
-        ${slide.items
-            .map(
-            (item) => `
-            <li class="mb-2">
-                <span class="p-text-highlight fw-bold">${item.label}:</span>
-                <span class="p-description">${item.val}</span>
-            </li>
-        `
-            )
-            .join("")}
-    </ul>
-</div>
-`
-    )
-    .join("");
+    elements.skillsTrack.innerHTML = DATA.skills.map((slide, index) => `
+        <div class="carousel-item ${index === 0 ? "active" : ""}">
+            <p class="p-title h3 mb-3">${escapeHtml(slide.title)}</p>
+            <ul class="list-unstyled">
+                ${slide.items.map(item => `
+                    <li class="mb-2">
+                        <span class="p-text-highlight fw-bold">${escapeHtml(item.label)}:</span>
+                        <span class="p-description">${escapeHtml(item.val)}</span>
+                    </li>
+                `).join("")}
+            </ul>
+        </div>
+    `).join("");
 
-indicators.innerHTML = DATA.skills
-    .map(
-    (_, index) => `
-<div class="p-pagination-dot ${index === 0 ? "active" : ""}" 
-        data-bs-target="#skillsCarousel" 
-        data-bs-slide-to="${index}">+</div>
-`
-    )
-    .join("");
+    elements.indicators.innerHTML = DATA.skills.map((_, index) => `
+        <div class="p-pagination-dot ${index === 0 ? "active" : ""}"
+             data-bs-target="#skillsCarousel"
+             data-bs-slide-to="${index}">+</div>
+    `).join("");
 }
 
 function renderCerts() {
-    const container = document.getElementById('certifications-container');
-    if (!container) return;
+    if (!elements.certs) return;
 
-    container.innerHTML = DATA.certs.map(cert => `
-        <div class="p-certification" title="${cert.name}" onclick="window.open('${cert.url}', '_blank')" style="cursor: pointer;">
-            <img src="${fromPortfolioRoot(cert.img)}" alt="${cert.name}" class="p-cert-badge" />
+    elements.certs.innerHTML = DATA.certs.map(cert => `
+        <div class="p-certification"
+             title="${escapeHtml(cert.name)}"
+             data-cert-url="${escapeHtml(cert.url)}"
+             style="cursor: pointer;">
+            <img src="${fromPortfolioRoot(cert.img)}"
+                 alt="${escapeHtml(cert.name)}"
+                 class="p-cert-badge"
+                 loading="lazy" />
         </div>
     `).join('');
 }
 
-function initNav() {
-    const carousel = document.getElementById('skillsCarousel');
-    const dots = document.querySelectorAll('.p-pagination-dot');
-    
-    if (carousel) {
-        carousel.addEventListener('slide.bs.carousel', event => {
-            dots.forEach(d => d.classList.remove('active'));
-            if(dots[event.to]) dots[event.to].classList.add('active');
-        });
-    }
+function initEvents() {
+    elements.certs?.addEventListener('click', event => {
+        const cert = event.target.closest('.p-certification');
+        const url = cert?.dataset.certUrl;
+        if (url && url !== '#') window.open(url, '_blank', 'noopener,noreferrer');
+    });
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-                document.querySelectorAll('.p-nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            }
+    elements.socials?.addEventListener('click', event => {
+        const icon = event.target.closest('.p-social-icon');
+        const url = icon?.dataset.socialUrl;
+        if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    });
+
+    elements.socials?.addEventListener('keydown', event => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+
+        const icon = event.target.closest('.p-social-icon');
+        if (!icon) return;
+
+        event.preventDefault();
+        icon.click();
+    });
+
+    elements.skillsCarousel?.addEventListener('slide.bs.carousel', event => {
+        elements.indicators?.querySelectorAll('.p-pagination-dot').forEach((dot, index) => {
+            dot.classList.toggle('active', index === event.to);
         });
     });
-}
 
-function initContactButtons() {
-    const cvBtn = document.getElementById('btn-download-cv');
-
-    if (cvBtn && DATA.contact.cvUrl) {
-        cvBtn.addEventListener('click', () => window.open(fromPortfolioRoot(DATA.contact.cvUrl), '_blank'));
+    if (elements.cvButton && DATA.contact.cvUrl) {
+        elements.cvButton.addEventListener('click', () => {
+            window.open(fromPortfolioRoot(DATA.contact.cvUrl), '_blank', 'noopener,noreferrer');
+        });
     }
 }
 
 renderSkills();
 renderSocials();
 renderCerts();
-initNav();
-initContactButtons();
+initEvents();

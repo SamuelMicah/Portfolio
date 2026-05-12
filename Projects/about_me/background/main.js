@@ -28,8 +28,7 @@ let mixer;
 const loader = new GLTFLoader();
 const clock = new THREE.Clock();
 
-// Using root-relative path as discussed
-loader.load(new URL('https://cdn.samuelmicah.com/Portfolio%20Data/about_me/push_up.glb', import.meta.url).href, (gltf) => {
+loader.load(new URL('../../../temp/push_up.glb', import.meta.url).href, (gltf) => {
     const model = gltf.scene;
     scene.add(model);
 

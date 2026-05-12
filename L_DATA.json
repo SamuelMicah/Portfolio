@@ -1,6 +1,6 @@
 {
     "About Me": {
-        "background_iframe_src": "./Projects/about_me/background/index.html?v=perf-20260512",
+        "background_iframe_src": "./Projects/about_me/background/index.html?v=rebuild-20260512",
         "background_video_src": "",
 
         "background_color": "rgb(10, 10, 10)",
@@ -56,7 +56,7 @@
             "deeppink"
         ],
 
-        "project_iframe_src": "./Projects/about_me/index.html?v=perf-20260512",
+        "project_iframe_src": "./Projects/about_me/index.html?v=rebuild-20260512",
 
         "pagination": "true",
         "pagination_color": "grey",

@@ -1,14 +1,12 @@
 import { loadDataSafely, LandscapeDataURL } from "../utils/data.js";
 import animationManager from "../utils/animationManager.js";
+import { byId, escapeHtml, setRootVars } from "../utils/dom.js";
 
-// Animation timing constants
 const ANIMATION_DURATION = {
     LOADING: 2000,
-    BOUNCE: 400,
-    TRANSITION: 600
+    BOUNCE: 400
 };
 
-// Fallback data
 const FALLBACK_DATA = {
     "About Me": {
         background_iframe_src: "",
@@ -40,195 +38,41 @@ const FALLBACK_DATA = {
     }
 };
 
-let DATA;
-let numberOfCarousels = 0;
-let activeCarousel = 0;
-let isTransitioning = false;
-let isInitialized = false;
-// Remove activeAnimations Set - now managed by animationManager
-
-// DOM element references (cached for performance)
 const elements = {
-    background: document.getElementById("L-background"),
-    backgroundBlur: document.getElementById("L-background-blur"),
-    titleButton: document.getElementById("L-title-desktop"),
-    projectCarousel: document.getElementById('L-project-carousel'),
-    projectInnerCarousel: document.getElementById('L-project-inner-carousel'),
-    leftNav: document.getElementById("L-left_navigation"),
-    rightNav: document.getElementById("L-right_navigation"),
-    projectDescription: document.getElementById("L-project-description"),
-    carouselIndicators: document.getElementById("L-carousel-indicators"),
-    loadingContainer: document.getElementById("L-loading-animation-container")
+    background: byId("L-background"),
+    backgroundBlur: byId("L-background-blur"),
+    titleButton: byId("L-title-desktop"),
+    projectCarousel: byId('L-project-carousel'),
+    projectInnerCarousel: byId('L-project-inner-carousel'),
+    leftNav: byId("L-left_navigation"),
+    rightNav: byId("L-right_navigation"),
+    projectDescription: byId("L-project-description"),
+    carouselIndicators: byId("L-carousel-indicators"),
+    loadingContainer: byId("L-loading-animation-container")
 };
 
-// Initialize data
-async function initData() {
-    try {
-        DATA = await loadDataSafely(
-            new URL('../L_DATA.json', import.meta.url).href,
-            LandscapeDataURL,
-            FALLBACK_DATA
-        );
-        return true;
-    } catch (error) {
-        console.error('Fatal error loading landscape data:', error);
-        DATA = FALLBACK_DATA;
-        return false;
-    }
+const state = {
+    data: {},
+    projectNames: [],
+    activeIndex: 0,
+    isInitialized: false,
+    isTransitioning: false
+};
+
+async function loadLandscapeData() {
+    state.data = await loadDataSafely(
+        new URL('../L_DATA.json', import.meta.url).href,
+        LandscapeDataURL,
+        FALLBACK_DATA
+    );
+    state.projectNames = Object.keys(state.data);
 }
 
-// Utility: Escape HTML
-function escapeHtml(unsafe) {
-    if (!unsafe) return '';
-    return unsafe
-        .toString()
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+function currentLayout() {
+    return state.data[state.projectNames[state.activeIndex]];
 }
 
-// Utility: Sort data keys
-function sortData(initialProjectNumber = 0) {
-    const dataAssignments = {};
-    let currentProjectNumber = initialProjectNumber;
-
-    for (const key in DATA) {
-        if (Object.prototype.hasOwnProperty.call(DATA, key)) {
-            dataAssignments[currentProjectNumber] = key;
-            currentProjectNumber++;
-        }
-    }
-    return dataAssignments;
-}
-
-let sortedData = {};
-
-// Initialize buttons with proper event handling
-function initButtons() {
-    if (!elements.titleButton || !elements.leftNav || !elements.rightNav) {
-        console.error('Navigation buttons not found');
-        return;
-    }
-
-    elements.titleButton.addEventListener("click", handleReloadProject);
-    elements.leftNav.addEventListener("click", () => navigateProject(-1));
-    elements.rightNav.addEventListener("click", () => navigateProject(1));
-
-    // Focus management for better UX
-    [elements.leftNav, elements.rightNav, elements.carouselIndicators].forEach(el => {
-        if (el) {
-            el.addEventListener("mouseenter", () => window.focus());
-        }
-    });
-}
-
-// Initialize pagination dots
-function initPagination() {
-    if (!elements.carouselIndicators) return;
-
-    elements.carouselIndicators.innerHTML = '';
-    const fragment = document.createDocumentFragment();
-
-    for (let i = 0; i < numberOfCarousels; i++) {
-        const dot = document.createElement("div");
-        dot.classList.add("L-pagination-dot");
-        dot.innerHTML = "+";
-        dot.setAttribute("role", "button");
-        dot.setAttribute("aria-label", `Go to project ${i + 1}`);
-        dot.setAttribute("tabindex", "0");
-        
-        if (i === 0) dot.classList.add("active");
-
-        dot.setAttribute("data-bs-target", "#L-project-carousel");
-        dot.setAttribute("data-bs-slide-to", i.toString());
-
-        // Click handler
-        dot.addEventListener("click", () => {
-            if (!isTransitioning) {
-                const carousel = bootstrap.Carousel.getOrCreateInstance(elements.projectCarousel);
-                carousel.to(i);
-            }
-        });
-
-        // Keyboard accessibility
-        dot.addEventListener("keydown", (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                dot.click();
-            }
-        });
-
-        fragment.appendChild(dot);
-    }
-
-    elements.carouselIndicators.appendChild(fragment);
-}
-
-// Build inner carousel HTML
-function buildInnerCarouselContent() {
-    if (!elements.projectInnerCarousel) return;
-
-    let carouselHtml = '';
-    let isFirstItem = true;
-
-    for (const project in DATA) {
-        if (Object.hasOwnProperty.call(DATA, project)) {
-            const activeClass = isFirstItem ? 'active' : '';
-            isFirstItem = false;
-            carouselHtml += `<div class="carousel-item h-100 w-100 absolute top-0 left-0 rounded-xl ${activeClass}"></div>`;
-        }
-    }
-
-    if (Object.keys(DATA).length === 0) {
-        carouselHtml = `<div class="carousel-item h-100 w-100 absolute top-0 left-0 rounded-xl active">
-                        <p>No content available for the carousel.</p>
-                    </div>`;
-    }
-
-    elements.projectInnerCarousel.innerHTML = carouselHtml;
-}
-
-// Setup carousel event listeners
-function setupCarouselEvents() {
-    if (!elements.projectCarousel) return;
-
-    elements.projectCarousel.addEventListener('slide.bs.carousel', event => {
-        isTransitioning = true;
-        const direction = event.direction === "left" ? 1 : -1;
-        loadingIndicator(direction);
-        unloadLayout();
-    });
-
-    elements.projectCarousel.addEventListener('slid.bs.carousel', event => {
-        const activeItem = elements.projectCarousel.querySelector('.carousel-item.active');
-        activeCarousel = Array.from(elements.projectCarousel.querySelectorAll('.carousel-item')).indexOf(activeItem);
-        
-        const layoutData = DATA[sortedData[activeCarousel]];
-        if (layoutData) {
-            loadLayout(layoutData);
-        }
-
-        if (!elements.carouselIndicators.classList.contains("hidden")) {
-            updatePaginationDots(activeCarousel);
-        }
-        
-        isTransitioning = false;
-    });
-}
-
-// Update pagination dots
-function updatePaginationDots(index) {
-    const dots = elements.carouselIndicators?.querySelectorAll(".L-pagination-dot");
-    if (!dots) return;
-
-    dots.forEach((dot, i) => {
-        dot.classList.toggle("active", i === index);
-    });
-}
-
-function getBorderValues(border) {
+function normalizeBorder(border) {
     if (Array.isArray(border)) return border;
     if (border && typeof border === "object") {
         return [border.top, border.right, border.bottom, border.left];
@@ -236,63 +80,150 @@ function getBorderValues(border) {
     return ["0px", "0px", "0px", "0px"];
 }
 
-// Toggle navigation buttons
+function buildCarouselFrames() {
+    if (!elements.projectInnerCarousel) return;
+
+    const frames = state.projectNames.length
+        ? state.projectNames.map((_, index) => (
+            `<div class="carousel-item h-100 w-100 absolute top-0 left-0 rounded-xl ${index === 0 ? 'active' : ''}"></div>`
+        )).join('')
+        : `<div class="carousel-item h-100 w-100 absolute top-0 left-0 rounded-xl active">
+            <p>No content available for the carousel.</p>
+        </div>`;
+
+    elements.projectInnerCarousel.innerHTML = frames;
+}
+
+function initButtons() {
+    if (!elements.titleButton || !elements.leftNav || !elements.rightNav) {
+        console.error('Navigation buttons not found');
+        return;
+    }
+
+    elements.titleButton.addEventListener("click", reloadCurrentProject);
+    elements.leftNav.addEventListener("click", () => navigateProject(-1));
+    elements.rightNav.addEventListener("click", () => navigateProject(1));
+
+    [elements.leftNav, elements.rightNav, elements.carouselIndicators].forEach(el => {
+        el?.addEventListener("mouseenter", () => window.focus());
+    });
+}
+
+function initPagination() {
+    if (!elements.carouselIndicators) return;
+
+    const fragment = document.createDocumentFragment();
+    elements.carouselIndicators.replaceChildren();
+
+    state.projectNames.forEach((_, index) => {
+        const dot = document.createElement("div");
+        dot.className = `L-pagination-dot ${index === 0 ? 'active' : ''}`;
+        dot.textContent = "+";
+        dot.setAttribute("role", "button");
+        dot.setAttribute("aria-label", `Go to project ${index + 1}`);
+        dot.setAttribute("tabindex", "0");
+        dot.setAttribute("data-bs-target", "#L-project-carousel");
+        dot.setAttribute("data-bs-slide-to", index.toString());
+
+        dot.addEventListener("click", () => goToProject(index));
+        dot.addEventListener("keydown", event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                goToProject(index);
+            }
+        });
+
+        fragment.appendChild(dot);
+    });
+
+    elements.carouselIndicators.appendChild(fragment);
+}
+
+function setupCarouselEvents() {
+    if (!elements.projectCarousel) return;
+
+    elements.projectCarousel.addEventListener('slide.bs.carousel', event => {
+        state.isTransitioning = true;
+        loadingIndicator(event.direction === "left" ? 1 : -1);
+        unloadLayout();
+    });
+
+    elements.projectCarousel.addEventListener('slid.bs.carousel', event => {
+        state.activeIndex = event.to ?? getActiveCarouselIndex();
+        loadLayout(currentLayout());
+        updatePaginationDots();
+        state.isTransitioning = false;
+    });
+}
+
+function getActiveCarouselIndex() {
+    const activeItem = elements.projectCarousel?.querySelector('.carousel-item.active');
+    const items = Array.from(elements.projectCarousel?.querySelectorAll('.carousel-item') || []);
+    return Math.max(0, items.indexOf(activeItem));
+}
+
+function updatePaginationDots() {
+    elements.carouselIndicators?.querySelectorAll(".L-pagination-dot").forEach((dot, index) => {
+        dot.classList.toggle("active", index === state.activeIndex);
+    });
+}
+
 function toggleNavigation(navElement, enable) {
     if (!navElement) return;
-    
+
     navElement.disabled = !enable;
     navElement.classList.toggle("L-fade_Out", !enable);
-    
+
     if (!enable) {
         const otherNav = navElement === elements.rightNav ? elements.leftNav : elements.rightNav;
         otherNav?.classList.add("scroll-down");
+    } else {
+        navElement.classList.remove("scroll-down");
     }
 }
 
-// Update navigation boundaries
-function navigationBoundaries(forceDisabled = false) {
-    if (forceDisabled) {
-        toggleNavigation(elements.leftNav, false);
-        toggleNavigation(elements.rightNav, false);
-        return;
-    }
-    toggleNavigation(elements.leftNav, activeCarousel !== 0);
-    toggleNavigation(elements.rightNav, activeCarousel !== numberOfCarousels - 1);
+function updateNavigation() {
+    toggleNavigation(elements.leftNav, state.activeIndex !== 0);
+    toggleNavigation(elements.rightNav, state.activeIndex !== state.projectNames.length - 1);
 }
 
-// Navigate to next/previous project
+function goToProject(index) {
+    if (state.isTransitioning || index === state.activeIndex) return;
+    if (index < 0 || index >= state.projectNames.length) return;
+
+    bootstrap.Carousel.getOrCreateInstance(elements.projectCarousel).to(index);
+}
+
 function navigateProject(direction) {
-    if (isTransitioning) return;
-    
-    const nextChildIndex = activeCarousel + direction;
+    if (state.isTransitioning) return;
 
-    if (nextChildIndex >= 0 && nextChildIndex <= numberOfCarousels - 1) {
-        bootstrap.Carousel.getOrCreateInstance(elements.projectCarousel).to(nextChildIndex);
-        
-        const isRight = direction === 1;
-        const nav = isRight ? elements.rightNav : elements.leftNav;
-        const bounceClass = isRight ? 'L-bounce_right' : 'L-bounce_left';
-        
-        if (!nav) return;
-        
-        nav.disabled = true;
-        nav.classList.add(bounceClass);
+    const nextIndex = state.activeIndex + direction;
+    if (nextIndex < 0 || nextIndex >= state.projectNames.length) return;
 
-        const cleanup = () => {
-            nav.classList.remove(bounceClass);
-            nav.disabled = false;
-        };
-
-        nav.addEventListener("transitionend", cleanup, { once: true });
-        setTimeout(cleanup, ANIMATION_DURATION.BOUNCE);
-    }
+    goToProject(nextIndex);
+    bounceNavigation(direction === 1 ? elements.rightNav : elements.leftNav, direction === 1);
 }
 
-// Reload current project with animation
-function handleReloadProject() {
-    if (isTransitioning || !elements.titleButton) return;
-    
-    isTransitioning = true;
+function bounceNavigation(nav, isRight) {
+    if (!nav) return;
+
+    const bounceClass = isRight ? 'L-bounce_right' : 'L-bounce_left';
+    nav.disabled = true;
+    nav.classList.add(bounceClass);
+
+    const cleanup = () => {
+        nav.classList.remove(bounceClass);
+        nav.disabled = false;
+    };
+
+    nav.addEventListener("transitionend", cleanup, { once: true });
+    animationManager.addTimeout(cleanup, ANIMATION_DURATION.BOUNCE);
+}
+
+function reloadCurrentProject() {
+    if (state.isTransitioning || !elements.titleButton) return;
+
+    state.isTransitioning = true;
     elements.titleButton.disabled = true;
     elements.titleButton.style.color = "transparent";
     elements.titleButton.classList.add("L-delete");
@@ -301,28 +232,27 @@ function handleReloadProject() {
     loadingIndicator(1);
 
     const onFirstAnimationEnd = () => {
-        const currentLayout = DATA[sortedData[activeCarousel]];
-        if (currentLayout) {
-            elements.titleButton.innerHTML = escapeHtml(currentLayout.title);
-            elements.titleButton.style.color = currentLayout.title_navigation_color;
+        const layout = currentLayout();
+        if (layout) {
+            elements.titleButton.innerHTML = escapeHtml(layout.title);
+            elements.titleButton.style.color = layout.title_navigation_color;
         }
-        
+
         elements.titleButton.classList.remove("L-delete");
         elements.titleButton.classList.add("L-write");
 
-        const onSecondAnimationEnd = () => {
+        elements.titleButton.addEventListener("animationend", () => {
             elements.titleButton.disabled = false;
-            isTransitioning = false;
-        };
-
-        elements.titleButton.addEventListener("animationend", onSecondAnimationEnd, { once: true });
+            state.isTransitioning = false;
+        }, { once: true });
     };
 
     elements.titleButton.addEventListener("animationend", onFirstAnimationEnd, { once: true });
 }
 
-// Loading indicator animation
 function loadingIndicator(direction) {
+    if (!elements.loadingContainer || typeof lottie === "undefined") return;
+
     const paths = [
         "./L/loading_animation/purple.json",
         "./L/loading_animation/pink.json",
@@ -331,119 +261,84 @@ function loadingIndicator(direction) {
         "./L/loading_animation/black.json"
     ];
 
-    if (!elements.loadingContainer) return;
-
     const loaderAnimationEl = document.createElement("div");
     loaderAnimationEl.classList.add("L-loader-animation");
 
     const startX = direction === -1 ? "-55vw" : "55vw";
+    const endX = direction === -1 ? "55vw" : "-55vw";
     const scaleX = direction === -1 ? "1" : "-1";
     loaderAnimationEl.style.transform = `translateX(${startX}) translateY(-33%) scaleX(${scaleX})`;
 
     elements.loadingContainer.appendChild(loaderAnimationEl);
 
-    let animation = null;
     const animationId = `loader-${Date.now()}-${direction}`;
-    
-    try {
-        animation = lottie.loadAnimation({
-            container: loaderAnimationEl,
-            renderer: "canvas",
-            loop: true,
-            autoplay: true,
-            path: paths[Math.floor(Math.random() * paths.length)]
-        });
-        
-        // Register with animation manager
-        animationManager.register(animationId, animation, { type: 'lottie' });
-    } catch (error) {
-        console.error('Failed to load Lottie animation:', error);
-    }
+    const animation = lottie.loadAnimation({
+        container: loaderAnimationEl,
+        renderer: "canvas",
+        loop: true,
+        autoplay: true,
+        path: paths[Math.floor(Math.random() * paths.length)]
+    });
 
-    // Trigger reflow
-    void loaderAnimationEl.offsetWidth;
+    animationManager.register(animationId, animation, { type: 'lottie' });
 
-    // Animate
     requestAnimationFrame(() => {
-        const endX = direction === -1 ? "55vw" : "-55vw";
         loaderAnimationEl.style.transform = `translateX(${endX}) translateY(-33%) scaleX(${scaleX})`;
     });
 
-    // Cleanup using animation manager
     animationManager.addTimeout(() => {
         animationManager.unregister(animationId);
         loaderAnimationEl.remove();
     }, ANIMATION_DURATION.LOADING);
 }
 
-// Load layout with batched style updates
-function loadLayout(layout) {
-    if (!layout) return;
+function appendProjectIframe(layout) {
+    const carouselItem = elements.projectInnerCarousel?.children[state.activeIndex];
+    if (!carouselItem || carouselItem.childElementCount || !layout.project_iframe_src) return;
 
-    navigationBoundaries();
+    const iframe = document.createElement("iframe");
+    iframe.src = layout.project_iframe_src;
+    iframe.allowFullscreen = true;
+    iframe.loading = "lazy";
+    iframe.classList.add("h-100", "w-100");
+    iframe.style.borderRadius = layout.inner_project_radius;
+    carouselItem.appendChild(iframe);
+}
 
-    // Load iframe if needed
-    const carouselItem = elements.projectInnerCarousel.children[activeCarousel];
-    if (carouselItem && carouselItem.innerHTML === "" && layout.project_iframe_src) {
-        const innerProject = document.createElement("iframe");
-        innerProject.src = layout.project_iframe_src;
-        innerProject.allowFullscreen = true;
-        innerProject.classList.add("h-100", "w-100");
-        innerProject.style.borderRadius = layout.inner_project_radius;
-        innerProject.setAttribute("loading", "lazy");
-        carouselItem.appendChild(innerProject);
-    }
-    
-    // Enable pointer events if there's content (iframe or background color)
-    const hasContent = layout.project_iframe_src || 
-                      (layout.inner_project_color && layout.inner_project_color !== "transparent");
-    elements.projectCarousel.style.pointerEvents = hasContent ? "auto" : "none";
-    elements.projectInnerCarousel.style.pointerEvents = hasContent ? "auto" : "none";
+function replaceBackground(layout) {
+    if (!elements.background) return;
 
-    // Load background iframe or video
-    if(elements.background) {
-        if (layout.background_iframe_src) {
-            const innerBackground = document.createElement("iframe");
-            innerBackground.src = layout.background_iframe_src;
-            innerBackground.allowFullscreen = true;
-            innerBackground.classList.add("h-100", "w-100");
-            innerBackground.setAttribute("loading", "lazy");
-            elements.background.replaceChildren(innerBackground);
-        }
-
-        if (layout.background_video_src) {
-            const video = document.createElement("video");
-            video.src = layout.background_video_src;
-            video.autoplay = true;
-            video.loop = true;
-            video.muted = true;
-            video.playsInline = true;
-            video.preload = "metadata";
-            video.classList.add("h-100", "w-100");
-            video.style.objectFit = "cover";
-            elements.background.replaceChildren(video);
-        }
+    if (layout.background_iframe_src) {
+        const iframe = document.createElement("iframe");
+        iframe.src = layout.background_iframe_src;
+        iframe.allowFullscreen = true;
+        iframe.loading = "lazy";
+        iframe.classList.add("h-100", "w-100");
+        elements.background.replaceChildren(iframe);
+        return;
     }
 
-    // Toggle pagination
-    const showPagination = layout.pagination !== "false";
-    elements.carouselIndicators?.classList.toggle("hidden", !showPagination);
-
-    // Update title - use textContent for security
-    if (elements.titleButton) {
-        elements.titleButton.textContent = layout.title;
-        elements.titleButton.style.color = layout.title_navigation_color;
-        elements.titleButton.classList.remove("L-delete");
-        elements.titleButton.classList.add("L-write");
+    if (layout.background_video_src) {
+        const video = document.createElement("video");
+        video.src = layout.background_video_src;
+        video.autoplay = true;
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        video.classList.add("h-100", "w-100");
+        video.style.objectFit = "cover";
+        elements.background.replaceChildren(video);
+        return;
     }
 
-    // Update description
-    if (elements.projectDescription) {
-        elements.projectDescription.textContent = layout.project_description;
-        elements.projectDescription.style.color = layout.project_description_color;
-    }
+    elements.background.replaceChildren();
+}
 
-    // Batch DOM updates using cssText for better performance
+function applyLayoutStyles(layout) {
+    const blurBorder = normalizeBorder(layout.background_blur_border);
+    const projectBorder = normalizeBorder(layout.inner_project_border);
+
     if (elements.background) {
         elements.background.style.cssText = `
             background-color: ${layout.background_color};
@@ -451,59 +346,83 @@ function loadLayout(layout) {
         `;
     }
 
-    if (elements.leftNav) elements.leftNav.style.color = layout.left_navigation_color;
-    if (elements.rightNav) elements.rightNav.style.color = layout.right_navigation_color;
-
     if (elements.backgroundBlur) {
-        const border = getBorderValues(layout.background_blur_border);
         elements.backgroundBlur.style.cssText = `
             background-color: ${layout.background_blur_color};
             filter: ${layout.background_blur_filter};
             backdrop-filter: ${layout.background_blur_backdrop_filter};
             -webkit-backdrop-filter: ${layout.background_blur_backdrop_filter};
-            border-top: ${border[0]} solid ${layout.background_blur_border_color[0]};
-            border-right: ${border[1]} solid ${layout.background_blur_border_color[1]};
-            border-bottom: ${border[2]} solid ${layout.background_blur_border_color[2]};
-            border-left: ${border[3]} solid ${layout.background_blur_border_color[3]};
+            border-top: ${blurBorder[0]} solid ${layout.background_blur_border_color[0]};
+            border-right: ${blurBorder[1]} solid ${layout.background_blur_border_color[1]};
+            border-bottom: ${blurBorder[2]} solid ${layout.background_blur_border_color[2]};
+            border-left: ${blurBorder[3]} solid ${layout.background_blur_border_color[3]};
             border-radius: ${layout.background_blur_radius};
         `;
     }
 
     if (elements.projectCarousel) {
-        const border = getBorderValues(layout.inner_project_border);
         elements.projectCarousel.style.cssText = `
+            pointer-events: ${layout.project_iframe_src || layout.inner_project_color !== "transparent" ? "auto" : "none"};
             background-color: ${layout.inner_project_color};
             filter: ${layout.inner_project_filter};
             backdrop-filter: ${layout.inner_project_backdrop_filter};
             -webkit-backdrop-filter: ${layout.inner_project_backdrop_filter};
-            border-top: ${border[0]} solid ${layout.inner_project_border_color[0]};
-            border-right: ${border[1]} solid ${layout.inner_project_border_color[1]};
-            border-bottom: ${border[2]} solid ${layout.inner_project_border_color[2]};
-            border-left: ${border[3]} solid ${layout.inner_project_border_color[3]};
+            border-top: ${projectBorder[0]} solid ${layout.inner_project_border_color[0]};
+            border-right: ${projectBorder[1]} solid ${layout.inner_project_border_color[1]};
+            border-bottom: ${projectBorder[2]} solid ${layout.inner_project_border_color[2]};
+            border-left: ${projectBorder[3]} solid ${layout.inner_project_border_color[3]};
             border-radius: ${layout.inner_project_radius};
             box-shadow: ${layout.inner_project_box_shadow};
         `;
     }
 
-    // Update CSS variables
-    document.documentElement.style.setProperty('--pagination-color', layout.pagination_color);
-    document.documentElement.style.setProperty('--pagination-active-color', layout.pagination_active_color);
-    document.documentElement.style.setProperty('--pagination-hover-color', layout.pagination_hover_color);
-}
-
-// Unload layout
-function unloadLayout() {
-    if (elements.titleButton) {
-        elements.titleButton.style.color = "transparent";
-        elements.titleButton.classList.add("L-delete");
+    if (elements.projectInnerCarousel) {
+        elements.projectInnerCarousel.style.pointerEvents = layout.project_iframe_src ? "auto" : "none";
     }
 
+    if (elements.leftNav) elements.leftNav.style.color = layout.left_navigation_color;
+    if (elements.rightNav) elements.rightNav.style.color = layout.right_navigation_color;
+
+    setRootVars({
+        '--pagination-color': layout.pagination_color,
+        '--pagination-active-color': layout.pagination_active_color,
+        '--pagination-hover-color': layout.pagination_hover_color
+    });
+}
+
+function loadLayout(layout) {
+    if (!layout) return;
+
+    updateNavigation();
+    appendProjectIframe(layout);
+    replaceBackground(layout);
+    applyLayoutStyles(layout);
+
+    elements.carouselIndicators?.classList.toggle("hidden", layout.pagination === "false");
+
+    if (elements.titleButton) {
+        elements.titleButton.textContent = layout.title;
+        elements.titleButton.style.color = layout.title_navigation_color;
+        elements.titleButton.classList.remove("L-delete");
+        elements.titleButton.classList.add("L-write");
+    }
+
+    if (elements.projectDescription) {
+        elements.projectDescription.textContent = layout.project_description;
+        elements.projectDescription.style.color = layout.project_description_color;
+    }
+}
+
+function unloadLayout() {
+    elements.titleButton?.classList.add("L-delete");
+    if (elements.titleButton) elements.titleButton.style.color = "transparent";
+
+    elements.background?.replaceChildren();
     if (elements.background) {
         elements.background.style.cssText = `
             background-color: transparent;
             opacity: 0;
         `;
-        elements.background.replaceChildren();
     }
 
     if (elements.backgroundBlur) {
@@ -527,53 +446,41 @@ function unloadLayout() {
         `;
     }
 
-    if (elements.projectDescription) {
-        elements.projectDescription.innerHTML = "";
-    }
+    if (elements.projectDescription) elements.projectDescription.textContent = "";
 
-    document.documentElement.style.setProperty('--pagination-color', "transparent");
-    document.documentElement.style.setProperty('--pagination-active-color', "transparent");
-    document.documentElement.style.setProperty('--pagination-hover-color', "transparent");
+    setRootVars({
+        '--pagination-color': "transparent",
+        '--pagination-active-color': "transparent",
+        '--pagination-hover-color': "transparent"
+    });
 }
 
-// Cleanup function for when view is hidden
+function loadInitialLayout() {
+    const match = window.location.pathname.match(/\/project\/(\d+)/);
+    const index = match ? Number(match[1]) : 0;
+    state.activeIndex = Math.min(Math.max(index, 0), state.projectNames.length - 1);
+    loadLayout(currentLayout());
+}
+
 export function cleanupLandscape() {
-    // Use animation manager for comprehensive cleanup
     animationManager.cleanupAll();
     unloadLayout();
-    
-    // Additional landscape-specific cleanup
-    isTransitioning = false;
+    state.isTransitioning = false;
 }
 
-// Initialize everything
 export async function initLandscape() {
-    if (isInitialized) {
-        loadLayout(DATA[sortedData[activeCarousel]]);
+    if (state.isInitialized) {
+        loadLayout(currentLayout());
         return;
     }
 
-    const success = await initData();
-
-    if (!success) {
-        console.error('Failed to initialize landscape data');
-    }
-
-    sortedData = sortData();
-
+    await loadLandscapeData();
+    buildCarouselFrames();
     initButtons();
-    buildInnerCarouselContent();
-
-    numberOfCarousels = Array.from(elements.projectCarousel.querySelectorAll('.carousel-item')).length;
 
     setupCarouselEvents();
     initPagination();
+    loadInitialLayout();
 
-    if (window.location.pathname.match(/\/project\/(\d+)/)) {
-        const match = window.location.pathname.match(/\/project\/(\d+)/);
-        loadLayout(DATA[sortedData[match[1]]]);
-    } else {
-        loadLayout(DATA[sortedData[0]]);
-    }
-    isInitialized = true;
+    state.isInitialized = true;
 }
