@@ -29,7 +29,7 @@ const loader = new GLTFLoader();
 const clock = new THREE.Clock();
 
 // Using root-relative path as discussed
-loader.load('', (gltf) => {
+loader.load('./temp/push_up.glb', (gltf) => {
     const model = gltf.scene;
     scene.add(model);
 

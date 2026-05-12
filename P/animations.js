@@ -29,7 +29,7 @@ scene.add(dirLight);
 let mixer, action, clip;
 const loader = new GLTFLoader();
 
-loader.load('', (gltf) => {
+loader.load('./temp/push_up.glb', (gltf) => {
     const model = gltf.scene;
     scene.add(model);
 

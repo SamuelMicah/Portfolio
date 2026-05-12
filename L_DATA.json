@@ -14,7 +14,7 @@
         "background_blur_filter": "drop-shadow(0px 0px 0px transparent)",
         "background_blur_backdrop_filter": "blur(0px)",
     
-
+        
         "background_blur_color": "transparent",
         "background_blur_radius": "0px",      
 
