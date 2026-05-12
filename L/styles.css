@@ -1,0 +1,339 @@
+/* style.css */
+:root {
+    --title-nav-color: "black";
+    --pagination-color: "grey";
+    --pagination-hover-color: "black";
+    --pagination-active-color: "pink";
+    --rgb: "red";
+}
+
+.b {
+    border: 2px red solid;
+}
+
+#landscape-view{
+    width: 100%;
+    min-height: 100%;
+    overflow-y: hidden;
+    animation: rgb-color-cycle 2s infinite;
+}
+
+/* ===== Background ===== */
+#landscape-view #L-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: all 0.6s ease-in-out;
+    pointer-events: auto;    
+    z-index: 1;
+}
+
+/* ===== Background Blur ===== */
+#landscape-view #L-background-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: all 0.6s ease-in-out;
+    pointer-events: none; 
+    z-index: 2;
+}
+
+/* ===== Containers ===== */
+#landscape-view .L-content-container{
+    height: 100vh;
+    pointer-events: none;    
+    z-index: 3;
+}
+
+#landscape-view .L-title-container {
+    height: 14vh;
+    min-height: 50px;
+}
+
+#landscape-view .L-nav-carousel-container{
+    height: 72vh;
+    min-height: 400px;
+}
+
+#landscape-view #L-pagination-container {
+    height: 4vh;
+    min-height: 25px;
+}
+
+#landscape-view .L-project-description-container {
+    height: 5vh;
+    min-height: 25px;
+}
+
+#landscape-view #L-loading-animation-container {
+    height: 5vh;
+    min-height: 25px;
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+/* ====== Title ====== */
+#landscape-view #L-title-desktop {
+    background-color: transparent;
+    font-family: 'Inika', serif;
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    font-weight: bolder;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    color: var(--title-nav-color);
+    /* filter: drop-shadow(1px 1px 1px var(--title-nav-color)); */
+    /* Prevent text highlighting on all supported browsers*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    pointer-events: auto;
+    transition: all 0.6s ease-in-out;
+    z-index: 4;
+}
+
+#landscape-view #L-title-desktop:disabled {
+    opacity: 1;
+    filter: none;
+    cursor: default;
+    color: var(--title-nav-color);
+}
+
+#landscape-view #L-title-desktop:hover {
+    transform: translateY(5%) scale(0.95);
+    transition: all 0.3s ease-in-out;
+}
+
+#landscape-view .L-write {
+    animation: L-writing 0.6s ease-in 1 both;
+}
+
+#landscape-view .L-delete {
+    animation: L-deleting 0.6s ease-out 1 both;
+}
+
+@keyframes L-writing {
+    0% {
+        width: 0;
+        border: 0.375vw solid var(--rgb-color);
+        border-top: 0vw;
+        border-bottom: 0vw;
+        /* filter: drop-shadow(1px 1px 1px var(--title-nav-color)); */
+    }
+
+    100% {
+        width: 40%;
+        border: 0vw solid var(--rgb-color);
+        border-top: 0vw;
+        border-bottom: 0vw;
+        /* filter: drop-shadow(1px 1px 1px var(--title-nav-color)); */
+    }
+}
+
+@keyframes L-deleting {
+    0% {
+        width: 40%;
+        border: 0vw solid var(--rgb-color);
+        border-top: 0vw;
+        border-bottom: 0vw;
+        /* filter: drop-shadow(1px 1px 1px var(--title-nav-color)); */
+    }
+
+    100% {
+        width: 0;
+        border: 0.375vw solid var(--rgb-color);
+        border-top: 0vw;
+        border-bottom: 0vw;
+        /* filter: drop-shadow(1px 1px 1px var(--title-nav-color)); */
+    }
+}
+
+
+
+/* ===== Project Carousel ===== */
+#landscape-view #L-project-carousel {
+    transition: 0.6s ease-in-out;
+    z-index: 4;
+}
+
+#landscape-view #L-project-inner-carousel {
+    transition: 0.6s ease-in-out;
+}
+
+
+
+/* ====== Navigation Buttons ====== */
+#landscape-view .L-navigation {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    cursor: pointer;
+    color: var(--title-nav-color);
+    filter: drop-shadow(1px 1px 1px var(--title-nav-color));
+    transition: transform 0.3s ease-in-out;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: all 0.5s ease-in-out;
+    z-index: 4;
+}
+
+#landscape-view #L-left_navigation:disabled {
+    filter: none;
+    cursor: pointer;
+    color: var(--title-nav-color);
+    filter: drop-shadow(1px 1px 1px var(--title-nav-color));
+}
+
+#landscape-view #L-right_navigation:disabled {
+    filter: none;
+    cursor: pointer;
+    color: var(--title-nav-color);
+    filter: drop-shadow(1px 1px 1px var(--title-nav-color));
+}
+
+#landscape-view #L-left_navigation:hover {
+    transform: scale(0.9);
+    animation-play-state: paused;
+}
+
+#landscape-view #L-right_navigation:hover {
+    transform: scale(0.9);
+    animation-play-state: paused;
+}
+
+#landscape-view #L-left_navigation.L-bounce_left {
+    transform: translateX(-5%) scale(0.8);
+}
+
+#landscape-view #L-right_navigation.L-bounce_right {
+    transform: translateX(5%) scale(0.8);
+}
+
+#landscape-view #L-left_navigation.L-fade_Out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#landscape-view #L-right_navigation.L-fade_Out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+#landscape-view .scroll-down {
+    animation: scrollbounce 2s infinite;
+}
+
+@keyframes scrollbounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateX(0);
+    }
+
+    40% {
+        transform: translateX(-15px);
+    }
+
+    60% {
+        transform: translateX(-8px);
+    }
+}
+
+
+/* ================= PAGINATION ================= */
+#landscape-view #L-carousel-indicators{
+    z-index: 4;
+}
+
+#landscape-view .L-pagination-dot {
+  font-size: 2rem;
+  pointer-events: auto;
+  font-weight: bolder;
+  line-height: 1;
+  color: var(--pagination-color);
+  cursor: pointer;
+  transform: rotate(45deg); /* This makes sense if using a square character */
+  transition: all 0.2s;
+  user-select: none; /* Prevents highlighting on click */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#landscape-view .L-pagination-dot:hover {
+  color: var(--pagination-hover-color);
+}
+
+#landscape-view .L-pagination-dot.active { 
+  color: var(--pagination-active-color); 
+}
+
+/* ===== Project Description ===== */
+#landscape-view #L-project-description {
+    font-weight: bolder;
+    font-size: clamp(1rem, 1.5vw, 1.3rem);
+    pointer-events: none;
+    transition: all 0.6s ease-in-out;
+    z-index: 4;
+}
+
+
+
+/* ===== Loading Animation ===== */
+#landscape-view .L-loader-animation {
+    height: 14vh;
+    position: absolute;
+    transition: transform 2s linear;
+    z-index: 4;
+}
+
+@property --rgb-color {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: red;
+}
+
+@keyframes rgb-color-cycle {
+    0% {
+        --rgb-color: red;
+    }
+
+    16.66% {
+        --rgb-color: orange;
+    }
+
+    33.33% {
+        --rgb-color: yellow;
+    }
+
+    50% {
+        --rgb-color: green;
+    }
+
+    66.66% {
+        --rgb-color: blue;
+    }
+
+    83.33% {
+        --rgb-color: indigo;
+    }
+
+    100% {
+        --rgb-color: red;
+    }
+}

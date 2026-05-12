@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Full Screen Glass Grid</title>
+    <style>
+      :root {
+        --accent: deeppink;
+        --glass: rgba(0, 0, 0, 0.3);
+        --border: rgba(0, 0, 0, 0.3);
+      }
+
+      body {
+        margin: 0;
+        background: transparent;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Segoe UI", sans-serif;
+        overflow: hidden;
+      }
+
+      /* 4x3 Centered Grid */
+      .grid-container {
+        display: grid;
+        width: 100%;
+        height: 100%;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 20px;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .card {
+        width: 100%;
+        height: 100%;
+        background: var(--glass);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        border: 1px solid var(--border);
+        border-radius: 2vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        overflow: hidden;
+        margin: auto;
+        container-type: inline-size;
+      }
+
+      .card:hover {
+        box-shadow: 0 0 30px rgba(0, 0, 0, 1);
+        transform: scale(1.02);
+      }
+
+      .title {
+        color: white;
+        font-weight: 600;
+        font-size: clamp(12px, 10cqw, 24px);
+        white-space: wrap;
+        text-align: center;
+        width: 95%;
+        display: block;
+        transition: 0.4s ease;
+        z-index: 2;
+      }
+
+      .description {
+        position: absolute;
+        bottom: -30px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: clamp(0.7rem, 1vw, 0.9rem);
+        opacity: 0;
+        transition: 0.4s ease;
+        text-align: center;
+      }
+
+      .card:hover .title {
+        transform: translateY(-15%);
+        color: var(--accent);
+      }
+      .card:hover .description {
+        bottom: 20%;
+        opacity: 1;
+      }
+
+      /* Fullscreen View */
+      .project-view {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: #000;
+        display: none;
+        z-index: 100;
+      }
+
+      /* Bottom Left Indicator */
+      .project-indicator {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--accent);
+        padding: 15px 25px;
+        border-radius: 15px;
+        z-index: 105;
+        pointer-events: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        font-size: 1.2rem;
+      }
+
+      .project-indicator span {
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.7;
+        display: inline;
+        margin-bottom: 4px;
+      }
+
+      #projectText {
+        margin: 0;
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        z-index: 100;
+      }
+
+      .back-btn {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        background: var(--accent);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 50px;
+        cursor: pointer;
+        z-index: 110;
+        font-weight: bold;
+        border: none;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .back-btn:hover {
+        transform: scale(1.1);
+        filter: brightness(1.2);
+        background: rgba(0, 0, 0, 0.6);
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-container" id="grid"></div>
+
+    <div class="project-view" id="projectView">
+      <button class="back-btn" onclick="closeProject()">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        BACK
+      </button>
+
+      <div class="project-indicator">
+        <span>
+          You are viewing |
+          <span id="projectText"></span>
+        </span>
+      </div>
+
+      <div id="iframeContainer" style="width: 100%; height: 100%"></div>
+    </div>
+
+    <script>
+      const myProjects = [
+        { title: "Live TFL Visualizer", url: "https://wikipedia.org" },
+        { title: "Role", url: "https://wikipedia.org" },
+        { title: "llm", url: "https://wikipedia.org" },
+        { title: "Ml", url: "https://wikipedia.org" },
+        { title: "Scenarios vs Solutions", url: "https://wikipedia.org" },
+      ];
+
+      const grid = document.getElementById("grid");
+      const view = document.getElementById("projectView");
+      const container = document.getElementById("iframeContainer");
+      const projectText = document.getElementById("projectText");
+
+      const totalToShow = Math.min(myProjects.length, 12);
+
+      for (let i = 0; i < totalToShow; i++) {
+        const project = myProjects[i];
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+                <div class="title">${project.title}</div>
+                <div class="description">Launch Experience</div>
+            `;
+
+        card.onclick = () => {
+          const iframe = document.createElement("iframe");
+          iframe.src = project.url;
+          container.appendChild(iframe);
+
+          projectText.innerText = project.title;
+
+          grid.style.display = "none";
+          view.style.display = "block";
+        };
+
+        grid.appendChild(card);
+      }
+
+      function closeProject() {
+        view.style.display = "none";
+        grid.style.display = "grid";
+        container.innerHTML = "";
+      }
+    </script>
+  </body>
+</html>

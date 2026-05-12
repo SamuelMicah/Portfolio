@@ -1,0 +1,124 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: transparent;
+}
+
+.b{
+  border: 2px solid red;
+}
+
+.both-layout {
+  height: 100%;
+  width: 100%;  
+  display: grid;
+  grid-template-columns: 46vw 46vw 8vw;  
+}
+
+.p-card {
+  background: rgba(0, 0, 0, 0.75);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(2px);
+  border-radius: 20px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* ================= TYPOGRAPHY ================= */
+.p-title {
+  font-size: 1.75vw;
+  font-weight: bolder;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.p-text-highlight { 
+  font-size: 1.2vw;
+  font-weight: bolder; 
+  color: deeppink;
+}
+
+.p-description { 
+  font-size: 1.1vw;
+  font-weight: bolder; 
+  color: white; 
+}
+
+/* Certifications */
+.p-cert-badge {
+  width: 7vw;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.p-cert-badge:hover {
+  transform: translateY(-5px) scale(1.05);
+}
+
+.p-project-img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+/* Pagination Dots */
+.p-pagination-dot {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  line-height: 1;
+  color: grey;
+  cursor: pointer;
+  transform: rotate(45deg);
+  transition: 0.2s;
+}
+
+.p-pagination-dot:hover {
+  color: black;
+}
+
+.p-pagination-dot.active { 
+  color: deeppink; 
+}
+
+/* Buttons */
+.p-btn-primary{
+  font-size: 1.1vw;
+  font-weight: bolder;
+  padding: 10px 20px;
+  transition: all 0.25s ease-in-out;
+  white-space: nowrap;
+}
+
+.p-btn-primary {
+  border-bottom: 2px solid deeppink;
+  color: white;
+  background: transparent;
+}
+
+.p-btn-primary:hover { 
+  transform: translateY(-2px) scale(1.2);
+  text-decoration: underline; 
+  transform: translateY(-2px) scale(1.2);
+  color: deeppink;
+  border-bottom: 2px solid white;
+}
+
+
+/* Social Icons */
+.p-social-icon {
+  font-size: 3vw;
+  color: white;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.p-social-icon:hover {
+  color: deeppink;
+  transform: translateY(-3px);
+}
+

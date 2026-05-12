@@ -1,0 +1,136 @@
+/* ================= IMAGE LOADING STATES ================= */
+
+/* Loading state - shimmer effect */
+img.img-loading {
+    background: linear-gradient(
+        90deg,
+        #f0f0f0 25%,
+        #e0e0e0 50%,
+        #f0f0f0 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    min-height: 100px; /* Prevent layout shift */
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Dark theme shimmer */
+[data-theme="dark"] img.img-loading {
+    background: linear-gradient(
+        90deg,
+        #2a2a2a 25%,
+        #1a1a1a 50%,
+        #2a2a2a 75%
+    );
+    background-size: 200% 100%;
+}
+
+/* Loaded state - fade in */
+img.img-loaded {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Error state */
+img.img-error {
+    opacity: 0.6;
+    filter: grayscale(100%);
+}
+
+/* Prevent layout shift with aspect ratio boxes */
+.img-wrapper {
+    position: relative;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.img-wrapper::before {
+    content: '';
+    display: block;
+    padding-top: 75%; /* Default 4:3 aspect ratio */
+}
+
+.img-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Specific aspect ratios */
+.img-wrapper--16-9::before {
+    padding-top: 56.25%; /* 16:9 */
+}
+
+.img-wrapper--1-1::before {
+    padding-top: 100%; /* Square */
+}
+
+.img-wrapper--4-3::before {
+    padding-top: 75%; /* 4:3 */
+}
+
+/* Portrait mode specific */
+#portrait-view .p-cert-badge {
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+#portrait-view .p-cert-badge.img-loading {
+    opacity: 0.5;
+}
+
+#portrait-view .p-cert-badge.img-loaded {
+    opacity: 1;
+}
+
+#portrait-view .p-project-img {
+    transition: opacity 0.3s;
+    background: #f5f5f5;
+}
+
+[data-theme="dark"] #portrait-view .p-project-img {
+    background: #2a2a2a;
+}
+
+/* Prevent content jumping during image load */
+.p-project-img,
+.p-cert-badge {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Progressive image loading blur effect (optional) */
+.progressive-img {
+    filter: blur(10px);
+    transition: filter 0.3s;
+}
+
+.progressive-img.img-loaded {
+    filter: blur(0);
+}
+
+/* Responsive image handling */
+@media (max-width: 768px) {
+    img.img-loading {
+        min-height: 75px;
+    }
+}

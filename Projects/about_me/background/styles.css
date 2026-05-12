@@ -1,0 +1,21 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: transparent;
+}
+
+#animation-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.b{
+    border: 2px solid red;
+}

@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Samuel Micah - Solutions Architect & Developer Portfolio"
+    />
+    <title>Samuel Micah - Portfolio</title>
+
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://use.fontawesome.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
+
+    <!-- Bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+      crossorigin="anonymous"
+    />
+    <!-- Font Inika -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inika&display=swap"
+    />
+
+    <!-- Styles CSS -->
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./L/styles.css" />
+    <link rel="stylesheet" href="./P/styles.css" />
+    <link rel="stylesheet" href="../utils/imageLoading.css" />
+
+    <!-- THREE JS -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.179.1/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.179.1/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- Portrait View -->
+    <div id="portrait-view" class="hidden">
+      <nav class="navbar fixed-top p-navbar">
+        <div class="container my-2">
+          <a
+            class="p-navbar-title"
+            onclick="location.reload()"
+            id="nav-brand"
+            role="button"
+            tabindex="0"
+            aria-label="Reload portfolio"
+            >Mobile Portfolio</a
+          >
+
+          <div class="d-flex align-items-center ms-auto gap-3">
+            <div class="nav-links">
+              <a href="#home" class="p-nav-link active" data-target="home"
+                >Home</a
+              >
+              <a href="#projects" class="p-nav-link" data-target="projects"
+                >Projects</a
+              >
+            </div>
+
+            <button
+              id="theme-toggle"
+              class="btn-reset p-darkmode"
+              aria-label="Toggle Dark Mode"
+            >
+              <i class="fas fa-sun" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <main>
+        <section id="home" class="container p-section-spacing">
+          <div class="p-card">
+            <h1 class="p-title">
+              <span id="l-welcome-msg"></span>
+              <span id="l-name" class="p-text-highlight"></span>
+              <span id="l-welcome-emoji" aria-label="waving hand"></span>
+            </h1>
+
+            <p class="p-description" id="l-about"></p>
+
+            <div class="d-flex flex-wrap gap-2 my-3">
+              <button class="btn p-btn-primary" id="btn-download-cv">
+                Download CV
+              </button>
+              <button class="btn p-btn-outline" id="btn-contact">
+                Contact me
+              </button>
+            </div>
+
+            <div
+              class="d-flex flex-wrap justify-content-evenly gap-4 mt-4"
+              id="certifications-container"
+              role="list"
+              aria-label="Professional certifications"
+            ></div>
+          </div>
+
+          <div class="p-card mt-4">
+            <div
+              id="skillsCarousel"
+              class="carousel slide"
+              data-bs-ride="carousel"
+              aria-label="Skills carousel"
+            >
+              <div class="carousel-inner" id="skills-track"></div>
+
+              <div
+                class="d-flex justify-content-center mt-3 gap-3"
+                id="carousel-indicators"
+                role="group"
+                aria-label="Carousel navigation"
+              ></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="p-scroll-trigger-wrapper" aria-label="3D showcase area">
+          <div id="3d-viewport" class="p-sticky-viewport">
+            <i
+              class="fas fa-angle-left p-scroll-down-indicator"
+              aria-hidden="true"
+            ></i>
+          </div>
+        </section>
+
+        <section id="projects" class="container p-section-spacing">
+          <div class="mb-5">
+            <h2 class="p-title">Projects</h2>
+            <p id="l-project-tagline" class="p-description"></p>
+          </div>
+
+          <div
+            id="projects-container"
+            role="list"
+            aria-label="Project showcase"
+          ></div>
+        </section>
+      </main>
+
+      <footer class="container mt-3 text-center">
+        <h3 class="p-footer-title mb-3">The End.</h3>
+        <div
+          class="d-flex justify-content-evenly pb-4"
+          id="social-links"
+          role="list"
+          aria-label="Social media links"
+        ></div>
+      </footer>
+
+      <script type="module" src="./P/main.js"></script>
+      <script type="module" src="./P/animations.js"></script>
+    </div>
+
+    <!-- Landscape View -->
+    <div id="landscape-view" class="hidden">
+      <!-- Background -->
+      <div id="L-background" aria-hidden="true"></div>
+
+      <!-- Background Blur -->
+      <div id="L-background-blur" aria-hidden="true"></div>
+
+      <!-- Content Container -->
+      <div class="container-fluid L-content-container">
+        <!-- Title -->
+        <div class="row L-title-container">
+          <div
+            class="col-12 d-flex align-items-center align-items-end justify-content-center"
+          >
+            <button
+              id="L-title-desktop"
+              aria-label="Project title - click to reload"
+            ></button>
+          </div>
+        </div>
+
+        <!-- Nav and Carousel -->
+        <div class="row L-nav-carousel-container">
+          <!-- Left Navigation -->
+          <div class="col-1 d-flex align-items-center justify-content-center">
+            <i
+              id="L-left_navigation"
+              class="fas fa-angle-left L-navigation"
+              role="button"
+              aria-label="Previous project"
+              tabindex="0"
+            ></i>
+          </div>
+
+          <!-- Project Container -->
+          <div class="col-10">
+            <div
+              id="L-project-carousel"
+              class="carousel slide h-100"
+              aria-label="Project showcase carousel"
+            >
+              <div
+                id="L-project-inner-carousel"
+                class="carousel-inner h-100"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Right Navigation -->
+          <div class="col-1 d-flex align-items-center justify-content-center">
+            <i
+              id="L-right_navigation"
+              class="fas fa-angle-right L-navigation"
+              role="button"
+              aria-label="Next project"
+              tabindex="0"
+            ></i>
+          </div>
+        </div>
+
+        <!-- Pagination Indicators -->
+        <div id="L-pagination-container" class="row">
+          <div
+            class="d-flex justify-content-center align-items-center gap-3 h-100"
+            id="L-carousel-indicators"
+            role="group"
+            aria-label="Project navigation dots"
+          ></div>
+        </div>
+
+        <!-- Project Description -->
+        <div class="row L-project-description-container mx-5">
+          <div
+            id="L-project-description"
+            class="col-12 d-flex align-items-start justify-content-center text-center"
+            role="region"
+            aria-label="Project description"
+          ></div>
+        </div>
+
+        <!-- Project load animation -->
+        <div
+          id="L-loading-animation-container"
+          class="row"
+          aria-hidden="true"
+        ></div>
+      </div>
+
+      <script type="module" src="./L/main.js"></script>
+    </div>
+
+    <!-- Bootstrap - Deferred for better performance -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+      crossorigin="anonymous"
+      defer
+    ></script>
+    <!-- Lottie - Deferred -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/lottie-web@latest/build/player/lottie.min.js"
+      defer
+    ></script>
+    <!-- Main JS -->
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
