@@ -28,7 +28,7 @@ let mixer;
 const loader = new GLTFLoader();
 const clock = new THREE.Clock();
 
-loader.load('https://cdn.samuelmicah.com/Portfolio%20Data/about_me/push_up.glb', (gltf) => {
+loader.load('https://cdn.samuelmicah.com/Portfolio%20Data/about_me/dance.glb', (gltf) => {
     const model = gltf.scene;
     scene.add(model);
 
@@ -37,8 +37,10 @@ loader.load('https://cdn.samuelmicah.com/Portfolio%20Data/about_me/push_up.glb',
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3()).length();
 
-    camera.position.set(center.x, center.y + size * 0.375, center.z + size * 1.125);
-    camera.lookAt(center);
+    // camera.position.set(center.x, center.y + size * 0.375, center.z + size * 1.125);
+    // camera.lookAt(center);
+    camera.position.set(-1.3, 2, 2.5);
+    camera.lookAt(-0.7, 0.8, 0);
 
     // Animation Setup
     if (gltf.animations.length > 0) {
